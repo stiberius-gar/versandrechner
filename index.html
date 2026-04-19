@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Versandkosten-Rechner</title>
+<title>Versandkosten-Rechner · Gartenholz.org</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f7f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:18px 12px}
@@ -12,31 +12,38 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f7f0;min-height:100vh
 .logo-text{font-size:20px;font-weight:700;color:#2d6a2d}
 .logo-sub{font-size:11px;color:#6b8f6b;margin-top:-1px}
 .subtitle{color:#6b8f6b;font-size:12px;margin-bottom:20px}
-.card{background:#fff;border-radius:15px;box-shadow:0 3px 16px rgba(45,106,45,.09);padding:20px 20px 16px;width:100%;max-width:480px;margin-bottom:13px}
-.step-label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#2d6a2d;text-transform:uppercase;letter-spacing:1px;margin-bottom:11px}
+.card{background:#fff;border-radius:15px;box-shadow:0 3px 16px rgba(45,106,45,.09);padding:20px;width:100%;max-width:520px;margin-bottom:13px}
+.step-label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#2d6a2d;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
 .step-badge{background:#2d6a2d;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
-select,input[type=number],input[type=text]{width:100%;padding:11px 13px;border:2px solid #e0ebd8;border-radius:8px;font-size:14px;color:#222;background:#fafcf8;outline:none;transition:border .2s}
+select,input{width:100%;padding:11px 13px;border:2px solid #e0ebd8;border-radius:8px;font-size:14px;color:#222;background:#fafcf8;outline:none;transition:border .2s}
 select:focus,input:focus{border-color:#2d6a2d;background:#fff}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232d6a2d' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;padding-right:38px;appearance:none}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
 .lbl{display:block;font-size:10px;font-weight:600;color:#5a7a5a;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
-.hint{font-size:10px;color:#9ab89a;margin-top:5px;text-align:center}
+.hint{font-size:10px;color:#9ab89a;margin-top:6px;text-align:center}
 .btn{width:100%;padding:14px;background:#2d6a2d;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:15px;transition:background .2s}
 .btn:hover{background:#245224}
-.result-card{background:#fff;border-radius:15px;box-shadow:0 3px 16px rgba(45,106,45,.11);width:100%;max-width:480px;overflow:hidden;display:none}
+.sendung-box{background:#f4f7f0;border-radius:10px;padding:14px;margin-top:14px;border:2px solid #e0ebd8}
+.sendung-title{font-size:12px;font-weight:700;color:#2d6a2d;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.sendung-detail{font-size:12px;color:#444;line-height:1.8}
+.sendung-detail b{color:#2d6a2d}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;margin-left:6px}
+.tag-paket{background:#e3f2fd;color:#1565c0}
+.tag-palette{background:#fff3e0;color:#e65100}
+.result-card{background:#fff;border-radius:15px;box-shadow:0 3px 16px rgba(45,106,45,.11);width:100%;max-width:520px;overflow:hidden;display:none}
 .result-header{background:#2d6a2d;color:#fff;padding:14px 18px 12px}
 .rh-sub{font-size:12px;opacity:.8;margin-bottom:2px}
-.rh-winner{font-size:24px;font-weight:800}
+.rh-winner{font-size:22px;font-weight:800}
 .rh-price{font-size:17px;font-weight:700;margin-top:2px}
 .info-row{display:flex;gap:7px;padding:12px 16px 0;flex-wrap:wrap}
-.chip{background:#f4f7f0;border-radius:7px;padding:7px 9px;font-size:10px;color:#5a7a5a;font-weight:500;flex:1;min-width:90px}
+.chip{background:#f4f7f0;border-radius:7px;padding:7px 9px;font-size:10px;color:#5a7a5a;font-weight:500;flex:1;min-width:80px}
 .chip span{display:block;font-weight:700;color:#2d6a2d;font-size:12px;margin-top:1px}
 .warn{margin:6px 16px 0;padding:7px 10px;background:#fff8e1;border-radius:7px;border:1px solid #ffe082;font-size:10px;color:#856404;line-height:1.5}
 .sped-status{margin:8px 16px 0;padding:9px 12px;border-radius:8px;font-size:11px;line-height:1.5}
 .sped-loading{background:#f0f7ff;border:1px solid #90caf9;color:#1565c0}
 .sped-error{background:#fff8e1;border:1px solid #ffe082;color:#856404}
-.sped-raw{background:#f9f9f9;border:1px solid #e0e0e0;color:#555;font-size:9px;word-break:break-all;margin-top:4px;padding:5px;border-radius:5px;max-height:60px;overflow:auto}
+.sped-raw{font-size:9px;word-break:break-all;margin-top:4px;max-height:50px;overflow:auto}
 .carrier-list{padding:12px 16px}
 .carrier-list h4{font-size:10px;font-weight:700;color:#9ab89a;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px}
 .crow{display:flex;align-items:flex-start;justify-content:space-between;padding:9px 11px;border-radius:8px;margin-bottom:6px;border:2px solid transparent}
@@ -57,6 +64,9 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .disc{font-size:9px;color:#b0c8b0;padding:0 16px 12px;line-height:1.5;margin-top:4px}
 .reset-btn{width:calc(100% - 32px);margin:0 16px 14px;padding:10px;background:#f4f7f0;color:#2d6a2d;border:2px solid #e0ebd8;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
 .reset-btn:hover{background:#e0ebd8}
+.mode-toggle{display:flex;gap:8px;margin-bottom:14px}
+.mode-btn{flex:1;padding:10px;border:2px solid #e0ebd8;border-radius:9px;background:#fafcf8;color:#5a7a5a;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+.mode-btn.active{border-color:#2d6a2d;background:#edf7ed;color:#2d6a2d}
 </style>
 </head>
 <body>
@@ -81,7 +91,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <optgroup label="Zone 1F"><option value="EE">🇪🇪 Estland</option><option value="FI">🇫🇮 Finnland</option><option value="HR">🇭🇷 Kroatien</option><option value="LT">🇱🇹 Litauen</option><option value="LV">🇱🇻 Lettland</option><option value="NO">🇳🇴 Norwegen</option></optgroup>
     <optgroup label="Zone 1G"><option value="BG">🇧🇬 Bulgarien</option><option value="GR">🇬🇷 Griechenland</option><option value="RO">🇷🇴 Rumänien</option><option value="RS">🇷🇸 Serbien</option></optgroup>
   </select>
-  <div class="row2" style="margin-top:9px">
+  <div class="grid2" style="margin-top:9px">
     <div><label class="lbl">📮 Ziel-PLZ</label><input type="text" id="plz" placeholder="z.B. 80331" maxlength="10"></div>
     <div><label class="lbl">👤 Empfängertyp</label>
       <select id="custType"><option value="b2b">Gewerblich (B2B)</option><option value="b2c">Privatkunde (B2C)</option></select>
@@ -90,14 +100,37 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   <div id="spedHint" style="display:none;font-size:10px;color:#e07a00;margin-top:6px;text-align:center">ℹ️ Speditionsabfrage nur für Deutschland verfügbar.</div>
 </div>
 <div class="card">
-  <div class="step-label"><div class="step-badge">2</div> Maße &amp; Gewicht</div>
-  <div class="grid2">
-    <div><label class="lbl">📏 Länge (cm)</label><input type="number" id="len" placeholder="z.B. 200" min="1"></div>
-    <div><label class="lbl">📐 Breite (cm)</label><input type="number" id="wid" placeholder="z.B. 60" min="1"></div>
-    <div><label class="lbl">📦 Höhe (cm)</label><input type="number" id="hei" placeholder="z.B. 40" min="1"></div>
-    <div><label class="lbl">⚖️ Gewicht (kg)</label><input type="number" id="wgt" placeholder="z.B. 25" min="0.1" step="0.1"></div>
+  <div class="step-label"><div class="step-badge">2</div> Produkt &amp; Menge</div>
+  <div class="mode-toggle">
+    <div class="mode-btn active" id="modeProdukt" onclick="setMode('produkt')">📦 Produkt eingeben</div>
+    <div class="mode-btn" id="modeManual" onclick="setMode('manual')">📐 Maße direkt eingeben</div>
   </div>
-  <div class="hint">Alle Angaben in cm / kg · Volumengewicht wird automatisch berechnet</div>
+  <div id="produktModus">
+    <div class="grid3" style="margin-bottom:10px">
+      <div><label class="lbl">📏 Länge/Stück (cm)</label><input type="number" id="pLen" placeholder="z.B. 150" min="1" oninput="berechneVorschau()"></div>
+      <div><label class="lbl">📐 Breite/Stück (cm)</label><input type="number" id="pBre" placeholder="z.B. 10" min="1" oninput="berechneVorschau()"></div>
+      <div><label class="lbl">📦 Höhe/Stück (cm)</label><input type="number" id="pHoe" placeholder="z.B. 10" min="1" oninput="berechneVorschau()"></div>
+    </div>
+    <div class="grid2">
+      <div><label class="lbl">⚖️ Gewicht/Stück (kg)</label><input type="number" id="pGew" placeholder="z.B. 10" min="0.1" step="0.1" oninput="berechneVorschau()"></div>
+      <div><label class="lbl">🔢 Anzahl Stück</label><input type="number" id="pAnz" placeholder="z.B. 20" min="1" oninput="berechneVorschau()"></div>
+    </div>
+    <div class="hint">App berechnet automatisch ob Paket oder Palette und optimiert die Stapelweise</div>
+    <div class="sendung-box" id="sendungBox" style="display:none">
+      <div class="sendung-title">📋 Berechnete Sendung</div>
+      <div class="sendung-detail" id="sendungDetail"></div>
+    </div>
+  </div>
+  <div id="manualModus" style="display:none">
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label class="lbl">📏 Länge (cm)</label><input type="number" id="mLen" placeholder="z.B. 150" min="1"></div>
+      <div><label class="lbl">📐 Breite (cm)</label><input type="number" id="mBre" placeholder="z.B. 60" min="1"></div>
+    </div>
+    <div class="grid2">
+      <div><label class="lbl">📦 Höhe (cm)</label><input type="number" id="mHoe" placeholder="z.B. 40" min="1"></div>
+      <div><label class="lbl">⚖️ Gewicht (kg)</label><input type="number" id="mGew" placeholder="z.B. 25" min="0.1" step="0.1"></div>
+    </div>
+  </div>
   <button class="btn" onclick="calculate()">🔍 Jetzt berechnen</button>
 </div>
 <div class="result-card" id="resultCard">
@@ -124,14 +157,86 @@ const DPD_EU={'1A':{cc:['AT','BE','LU','NL'],r:[{m:3,p:15.14},{m:5,p:16.70},{m:1
 const KM={DE:250,AT:650,BE:350,LU:320,NL:280,CH:680,CZ:700,DK:500,FR:600,GB:900,HU:900,IT:1100,PL:750,SK:800,SI:950,ES:1600,IE:1400,PT:1800,SE:800,EE:1500,FI:1700,HR:1050,LT:1400,LV:1400,NO:1200,BG:1600,GR:1700,RO:1450,RS:1250};
 function lr(r,kg){for(let x of r)if(kg<=(x.maxKg||x.m))return x.base||x.p;return null;}
 const fmt=v=>v.toFixed(2).replace('.',',')+' €';
+function optimiereSendung(pL,pB,pH,pGew,anzahl){
+  const gesamtGewKg=pGew*anzahl;
+  if(anzahl===1){const gurt=pL+2*(pB+pH);if(pL<=200&&gurt<=300&&gesamtGewKg<=40)return[{l:pL,b:pB,h:pH,gew:gesamtGewKg,typ:'paket',anz:1,info:'1 Stück als Paket'}];}
+  const maxPaketGew=31.5;
+  const stueckProPaket=Math.floor(maxPaketGew/pGew);
+  if(stueckProPaket>=1&&pL<=200){
+    const maxStapelH=Math.floor((300-pL)/2/pH);
+    const maxProPaket=Math.min(stueckProPaket,maxStapelH>0?maxStapelH:99);
+    if(maxProPaket>=1){
+      const pakete=Math.ceil(anzahl/maxProPaket);
+      const letztesPaketAnz=anzahl%maxProPaket||maxProPaket;
+      if(pakete<=5){
+        const ergebnis=[];
+        for(let i=0;i<pakete;i++){
+          const anz=(i===pakete-1)?letztesPaketAnz:maxProPaket;
+          const h=pH*anz;const gew=pGew*anz;const gurt=pL+2*(pB+h);
+          if(gurt<=300&&gew<=40)ergebnis.push({l:pL,b:pB,h:h,gew:gew,typ:'paket',anz:anz,info:`${anz} Stück gestapelt`});
+        }
+        if(ergebnis.length===pakete)return ergebnis;
+      }
+    }
+  }
+  const zielBreite=80,maxHoehe=200;
+  let nebeneinander=Math.floor(zielBreite/pB);if(nebeneinander<1)nebeneinander=1;
+  const palBrei=nebeneinander*pB;
+  const maxLagen=Math.floor(maxHoehe/pH);
+  const stueckProLage=nebeneinander;
+  const benoetigteLagen=Math.ceil(anzahl/stueckProLage);
+  const lagen=Math.min(benoetigteLagen,maxLagen);
+  const stueckProPalette=stueckProLage*lagen;
+  const anzPaletten=Math.ceil(anzahl/stueckProPalette);
+  const ergebnis=[];let restAnzahl=anzahl;
+  for(let i=0;i<anzPaletten;i++){
+    const dieseAnz=Math.min(restAnzahl,stueckProPalette);
+    const dieseLagen=Math.ceil(dieseAnz/stueckProLage);
+    ergebnis.push({l:pL,b:palBrei,h:dieseLagen*pH,gew:pGew*dieseAnz,typ:'palette',anz:dieseAnz,info:`${dieseAnz} Stück · ${nebeneinander} nebeneinander · ${dieseLagen} Lage(n)`});
+    restAnzahl-=dieseAnz;
+  }
+  return ergebnis;
+}
+function berechneVorschau(){
+  const pL=parseFloat(document.getElementById('pLen').value);
+  const pB=parseFloat(document.getElementById('pBre').value);
+  const pH=parseFloat(document.getElementById('pHoe').value);
+  const pGew=parseFloat(document.getElementById('pGew').value);
+  const anz=parseInt(document.getElementById('pAnz').value);
+  if(!pL||!pB||!pH||!pGew||!anz){document.getElementById('sendungBox').style.display='none';return;}
+  const sendungen=optimiereSendung(pL,pB,pH,pGew,anz);
+  const gesamtGew=pGew*anz;
+  let html=`Gesamtgewicht: <b>${gesamtGew} kg</b> · ${sendungen.length} Sendung(en)<br><br>`;
+  sendungen.forEach((s,i)=>{
+    const typTag=s.typ==='paket'?'<span class="tag tag-paket">📦 Paket</span>':'<span class="tag tag-palette">🚛 Palette</span>';
+    const gurt=s.l+2*(s.b+s.h);
+    html+=`<b>Sendung ${i+1}:</b>${typTag}<br>${s.info}<br>Maße: <b>${s.l}×${s.b}×${s.h} cm</b> · Gewicht: <b>${s.gew.toFixed(1)} kg</b>`;
+    if(s.typ==='paket')html+=` · Gurtmaß: ${Math.round(gurt)} cm`;
+    if(i<sendungen.length-1)html+='<hr style="border:none;border-top:1px solid #e0ebd8;margin:8px 0">';
+  });
+  document.getElementById('sendungDetail').innerHTML=html;
+  document.getElementById('sendungBox').style.display='block';
+}
+function setMode(mode){
+  if(mode==='produkt'){document.getElementById('produktModus').style.display='block';document.getElementById('manualModus').style.display='none';document.getElementById('modeProdukt').classList.add('active');document.getElementById('modeManual').classList.remove('active');}
+  else{document.getElementById('produktModus').style.display='none';document.getElementById('manualModus').style.display='block';document.getElementById('modeProdukt').classList.remove('active');document.getElementById('modeManual').classList.add('active');}
+}
+function checkCountry(){const cc=document.getElementById('country').value;document.getElementById('spedHint').style.display=(cc&&cc!=='DE')?'block':'none';}
 function calcGLS(l,b,h,kg,cc,b2c){const gurt=l+2*(b+h),v5=(l*b*h)/5000,v6=(l*b*h)/6000,vl=(l*b*h)/1000,items=[];if(cc==='DE'){if(l>200||b>200||h>200)return{possible:false,note:'Seite >200 cm'};if(gurt>300)return{possible:false,note:'Gurtmaß >300 cm'};const rg=Math.max(kg,v5);if(rg>40)return{possible:false,note:'Rechengewicht >40 kg'};const base=lr(GLS_DE,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`Basispreis (${rg.toFixed(1)} kg)`,v:base});if(l>120)items.push({l:'Überlänge >120 cm',v:2.50});if(vl>150)items.push({l:'Großpaket >150 L',v:2.50});if(b2c)items.push({l:'Privatkundenlieferung',v:0.35});items.push({l:'Maut',v:0.37});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 21%',v:parseFloat((s*0.21).toFixed(2))});}else{let zone=null,zk=null;for(let[k,z]of Object.entries(GLS_EU))if(z.cc.includes(cc)){zone=z;zk=k;break;}if(!zone)return{possible:false,note:'Land nicht im Tarif'};const rg=Math.max(kg,v6);if(rg>40||l>200||gurt>300)return{possible:false,note:'Maße/Gewicht überschritten'};const base=lr(zone.r,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`EBP Zone ${zk} (${rg.toFixed(1)} kg)`,v:base});if(l>120)items.push({l:'Überlänge >120 cm',v:2.50});if(vl>150)items.push({l:'Großpaket >150 L',v:2.50});const s1=items.reduce((a,i)=>a+i.v,0);items.push({l:'Maut intl. 5%',v:parseFloat((s1*0.05).toFixed(2))});const s2=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 21%',v:parseFloat((s2*0.21).toFixed(2))});}return{possible:true,price:items.reduce((a,i)=>a+i.v,0),items,note:'GLS via MRPacket'};}
 function calcDPD(l,b,h,kg,cc){const gurt=l+2*(b+h),v5=(l*b*h)/5000,vl=(l*b*h)/1000,items=[];if(cc==='DE'){if(l>175||gurt>300)return{possible:false,note:'Überlänge/Übergurtmaß'};const rg=Math.max(kg,v5);if(rg>40)return{possible:false,note:'Rechengewicht >40 kg'};if(rg>31.5){items.push({l:'Basispreis 31,5 kg',v:5.01});items.push({l:'Übergewicht-Zuschlag',v:54.00});}else{const base=lr(DPD_DE,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`Basispreis (${rg.toFixed(1)} kg)`,v:base});}if(l>120)items.push({l:'NC-Zuschlag >120 cm',v:7.50});else if(b>60||h>60)items.push({l:'NC-Zuschlag Seite >60 cm',v:7.50});else if(vl>150)items.push({l:'NC-Zuschlag >150 Liter',v:7.50});items.push({l:'Sicherheitszuschlag',v:0.17});items.push({l:'Maut',v:0.38});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 17%',v:parseFloat((s*0.17).toFixed(2))});}else{let zone=null,zk=null;for(let[k,z]of Object.entries(DPD_EU))if(z.cc.includes(cc)){zone=z;zk=k;break;}if(!zone)return{possible:false,note:'Land nicht im Tarif'};const rg=Math.max(kg,v5);if(rg>31.5||l>175||gurt>300)return{possible:false,note:'Maße/Gewicht überschritten'};const base=lr(zone.r,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`DPD Classic EU Zone ${zk} (${rg.toFixed(1)} kg)`,v:base});if(l>120)items.push({l:'NC-Zuschlag >120 cm',v:7.50});else if(b>60||h>60)items.push({l:'NC-Zuschlag Seite >60 cm',v:7.50});else if(vl>150)items.push({l:'NC-Zuschlag >150 Liter',v:7.50});items.push({l:'Sicherheitszuschlag',v:0.17});items.push({l:'Maut',v:0.38});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 17%',v:parseFloat((s*0.17).toFixed(2))});}return{possible:true,price:items.reduce((a,i)=>a+i.v,0),items,note:'DPD Classic via MRPacket'};}
 function calcEigen(cc){const km=KM[cc];if(!km)return{possible:false,note:'Entfernung unbekannt'};return{possible:true,price:km*2*1.20,items:[{l:`${km} km × 2 × 1,20 €`,v:km*2*1.20}],note:'Eigenfahrt ab Finnentrop'};}
-function checkCountry(){const cc=document.getElementById('country').value;document.getElementById('spedHint').style.display=(cc&&cc!=='DE')?'block':'none';}
 function renderCarriers(carriers){const possible=carriers.filter(c=>c.result.possible).sort((a,b)=>a.result.price-b.result.price);const best=possible[0];document.getElementById('winnerName').textContent=best?`${best.icon} ${best.name}`:'⚠️ Kein Anbieter';document.getElementById('winnerPrice').textContent=best?fmt(best.result.price)+' netto':'–';let html='';carriers.forEach(c=>{const isBest=best&&c.id===best.id;const cls=!c.result.possible?'na':isBest?'best':'ok';const bcls=!c.result.possible?'na':isBest?'best':'ok';const btxt=!c.result.possible?'N/A':isBest?'✓ Günstigste':'Verfügbar';let sur='';if(c.result.possible&&c.result.items)sur='<div class="csur">'+c.result.items.map(i=>`<div class="csur-row"><span>${i.l}</span><span>${fmt(i.v)}</span></div>`).join('')+'</div>';html+=`<div class="crow ${cls}"><div style="flex:1"><div class="cname">${c.icon} ${c.name} <span class="cbadge ${bcls}">${btxt}</span></div><div class="cnote">${c.result.note||''}</div>${sur}</div><div style="text-align:right;min-width:70px;padding-left:8px"><div class="cprice${c.result.possible?'':' na'}">${c.result.possible?fmt(c.result.price):'—'}</div>${c.result.possible?'<div class="cprice-sub">netto</div>':''}</div></div>`;});document.getElementById('carrierList').innerHTML=html;}
-async function fetchSpedition(plz,l,b,h,kg){const area=document.getElementById('spedStatusArea');area.innerHTML='<div class="sped-status sped-loading">⏳ Speditionspreise werden abgerufen…</div>';try{const resp=await fetch('/.netlify/functions/spedition',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plz,l,b,h,kg})});const json=await resp.json();const price=json.price??json.total_price??json.netto??json.data?.price??json.offers?.[0]?.price??null;if(price!=null){const p=parseFloat(price);area.innerHTML=`<div class="sped-status" style="background:#edf7ed;border:1px solid #2d6a2d;color:#2d6a2d">✅ Cargo International: <strong>${fmt(p)}</strong> netto</div>`;return{id:'sped',name:'Cargo International (Spedition)',icon:'🚚',result:{possible:true,price:p,items:[{l:'Spedition Live-Preis',v:p}],note:'Cargo International via API'}};}else{area.innerHTML=`<div class="sped-status sped-error">⚠️ Antwort erhalten, Preis nicht erkannt.<div class="sped-raw">${JSON.stringify(json).substring(0,300)}</div></div>`;return null;}}catch(e){area.innerHTML=`<div class="sped-status sped-error">⚠️ Speditionsabfrage fehlgeschlagen: ${e.message}</div>`;return null;}}
-async function calculate(){const cc=document.getElementById('country').value;const plz=document.getElementById('plz').value.trim();const b2c=document.getElementById('custType').value==='b2c';const l=parseFloat(document.getElementById('len').value);const b=parseFloat(document.getElementById('wid').value);const h=parseFloat(document.getElementById('hei').value);const kg=parseFloat(document.getElementById('wgt').value);if(!cc||!l||!b||!h||!kg)return alert('Bitte alle Felder ausfüllen.');const gls=calcGLS(l,b,h,kg,cc,b2c);const dpd=calcDPD(l,b,h,kg,cc);const eigen=calcEigen(cc);let carriers=[{id:'gls',name:'GLS via MRPacket',icon:'🟡',result:gls},{id:'dpd',name:'DPD via MRPacket',icon:'🔴',result:dpd},{id:'eigen',name:'Eigenfahrt',icon:'🚐',result:eigen}];const gurt=l+2*(b+h),vl=(l*b*h)/1000,vg=(l*b*h)/5000;document.getElementById('infoRow').innerHTML=[['Gurtmaß',Math.round(gurt)+' cm'],['Volumen',Math.round(vl)+' L'],['Vol.gew.',vg.toFixed(1)+' kg'],['Realgew.',kg+' kg']].map(([k,v])=>`<div class="chip">${k}<span>${v}</span></div>`).join('');let warns='';if(gurt>240&&gurt<=300)warns+=`<div class="warn">⚠️ Gurtmaß ${Math.round(gurt)} cm → Sonderhandling möglich</div>`;if(l>120)warns+=`<div class="warn">⚠️ Länge ${l} cm → Überlänge-Zuschläge greifen</div>`;if(vl>150)warns+=`<div class="warn">⚠️ Volumen ${Math.round(vl)} L → Großpaket-Zuschlag</div>`;document.getElementById('warnArea').innerHTML=warns;document.getElementById('spedStatusArea').innerHTML='';renderCarriers(carriers);const rc=document.getElementById('resultCard');rc.style.display='block';rc.scrollIntoView({behavior:'smooth',block:'start'});if(cc==='DE'&&plz.length>=4){const sped=await fetchSpedition(plz,l,b,h,kg);if(sped){carriers.push(sped);renderCarriers(carriers);}}}
-function resetForm(){document.getElementById('resultCard').style.display='none';document.getElementById('country').value='';document.getElementById('custType').value='b2b';document.getElementById('plz').value='';['len','wid','hei','wgt'].forEach(id=>document.getElementById(id).value='');document.getElementById('spedHint').style.display='none';window.scrollTo({top:0,behavior:'smooth'});}
+async function fetchSpedition(plz,l,b,h,kg){const area=document.getElementById('spedStatusArea');area.innerHTML='<div class="sped-status sped-loading">⏳ Speditionspreise werden abgerufen…</div>';try{const resp=await fetch('/.netlify/functions/spedition',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plz,l,b,h,kg})});const json=await resp.json();const price=json.price??json.total_price??json.netto??json.data?.price??json.offers?.[0]?.price??null;if(price!=null){const p=parseFloat(price);area.innerHTML=`<div class="sped-status" style="background:#edf7ed;border:1px solid #2d6a2d;color:#2d6a2d">✅ Cargo International: <strong>${fmt(p)}</strong> netto</div>`;return{id:'sped',name:'Cargo International (Spedition)',icon:'🚛',result:{possible:true,price:p,items:[{l:'Spedition Live-Preis',v:p}],note:'Cargo International via API'}};}else{area.innerHTML=`<div class="sped-status sped-error">⚠️ Antwort erhalten — Preis nicht erkannt.<div class="sped-raw">${JSON.stringify(json).substring(0,200)}</div></div>`;return null;}}catch(e){area.innerHTML=`<div class="sped-status sped-error">⚠️ Speditionsabfrage fehlgeschlagen: ${e.message}</div>`;return null;}}
+async function calculate(){const cc=document.getElementById('country').value;const plz=document.getElementById('plz').value.trim();const b2c=document.getElementById('custType').value==='b2c';if(!cc)return alert('Bitte ein Land auswählen.');const isProdukt=document.getElementById('produktModus').style.display!=='none';let sendungen=[];if(isProdukt){const pL=parseFloat(document.getElementById('pLen').value);const pB=parseFloat(document.getElementById('pBre').value);const pH=parseFloat(document.getElementById('pHoe').value);const pGew=parseFloat(document.getElementById('pGew').value);const anz=parseInt(document.getElementById('pAnz').value);if(!pL||!pB||!pH||!pGew||!anz)return alert('Bitte alle Produktfelder ausfüllen.');sendungen=optimiereSendung(pL,pB,pH,pGew,anz);}else{const l=parseFloat(document.getElementById('mLen').value);const b=parseFloat(document.getElementById('mBre').value);const h=parseFloat(document.getElementById('mHoe').value);const kg=parseFloat(document.getElementById('mGew').value);if(!l||!b||!h||!kg)return alert('Bitte alle Maße ausfüllen.');sendungen=[{l,b,h,gew:kg,typ:'manuell',anz:1,info:'Manuelle Eingabe'}];}
+let totalGLS=0,totalDPD=0,glsPossible=true,dpdPossible=true,glsItems=[],dpdItems=[],warns='';
+sendungen.forEach((s,i)=>{const gls=calcGLS(s.l,s.b,s.h,s.gew,cc,b2c);const dpd=calcDPD(s.l,s.b,s.h,s.gew,cc);const vl=(s.l*s.b*s.h)/1000;if(gls.possible){totalGLS+=gls.price;glsItems.push(...gls.items.map(x=>({l:`[S${i+1}] ${x.l}`,v:x.v})));}else glsPossible=false;if(dpd.possible){totalDPD+=dpd.price;dpdItems.push(...dpd.items.map(x=>({l:`[S${i+1}] ${x.l}`,v:x.v})));}else dpdPossible=false;if(s.l>120)warns+=`<div class="warn">⚠️ Sendung ${i+1}: Länge ${s.l} cm → Überlänge-Zuschläge</div>`;if(vl>150)warns+=`<div class="warn">⚠️ Sendung ${i+1}: Volumen ${Math.round(vl)} L → Großpaket-Zuschlag</div>`;});
+const eigen=calcEigen(cc);const s0=sendungen[0];const gesamtGew=sendungen.reduce((a,s)=>a+s.gew,0);
+document.getElementById('infoRow').innerHTML=[['Sendungen',sendungen.length+'x'],['Ges.gewicht',gesamtGew.toFixed(1)+' kg'],['Typ',sendungen[0].typ==='paket'?'📦 Paket':'🚛 Palette'],['Maße S1',`${s0.l}×${s0.b}×${s0.h}`]].map(([k,v])=>`<div class="chip">${k}<span>${v}</span></div>`).join('');
+document.getElementById('warnArea').innerHTML=warns;document.getElementById('spedStatusArea').innerHTML='';
+let carriers=[{id:'gls',name:'GLS via MRPacket',icon:'🟡',result:glsPossible?{possible:true,price:totalGLS,items:glsItems,note:`GLS · ${sendungen.length} Paket(e)`}:{possible:false,note:'Nicht möglich für diese Maße'}},{id:'dpd',name:'DPD via MRPacket',icon:'🔴',result:dpdPossible?{possible:true,price:totalDPD,items:dpdItems,note:`DPD · ${sendungen.length} Paket(e)`}:{possible:false,note:'Nicht möglich für diese Maße'}},{id:'eigen',name:'Eigenfahrt',icon:'🚐',result:eigen}];
+renderCarriers(carriers);const rc=document.getElementById('resultCard');rc.style.display='block';rc.scrollIntoView({behavior:'smooth',block:'start'});
+if(cc==='DE'&&plz.length>=4){const sped=await fetchSpedition(plz,s0.l,s0.b,s0.h,gesamtGew);if(sped){carriers.push(sped);renderCarriers(carriers);}}}
+function resetForm(){document.getElementById('resultCard').style.display='none';document.getElementById('country').value='';document.getElementById('custType').value='b2b';document.getElementById('plz').value='';['pLen','pBre','pHoe','pGew','pAnz','mLen','mBre','mHoe','mGew'].forEach(id=>document.getElementById(id).value='');document.getElementById('sendungBox').style.display='none';document.getElementById('spedHint').style.display='none';window.scrollTo({top:0,behavior:'smooth'});}
 </script>
 </body>
 </html>
