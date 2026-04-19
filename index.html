@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Versandkosten-Rechner</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f7f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:18px 12px}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.logo-icon{width:42px;height:42px;background:#2d6a2d;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo-text{font-size:20px;font-weight:700;color:#2d6a2d}
+.logo-sub{font-size:11px;color:#6b8f6b;margin-top:-1px}
+.subtitle{color:#6b8f6b;font-size:12px;margin-bottom:20px}
+.card{background:#fff;border-radius:15px;box-shadow:0 3px 16px rgba(45,106,45,.09);padding:20px 20px 16px;width:100%;max-width:480px;margin-bottom:13px}
+.step-label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#2d6a2d;text-transform:uppercase;letter-spacing:1px;margin-bottom:11px}
+.step-badge{background:#2d6a2d;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+select,input[type=number],input[type=text]{width:100%;padding:11px 13px;border:2px solid #e0ebd8;border-radius:8px;font-size:14px;color:#222;background:#fafcf8;outline:none;transition:border .2s}
+select:focus,input:focus{border-color:#2d6a2d;background:#fff}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232d6a2d' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;padding-right:38px;appearance:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+.lbl{display:block;font-size:10px;font-weight:600;color:#5a7a5a;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.hint{font-size:10px;color:#9ab89a;margin-top:5px;text-align:center}
+.btn{width:100%;padding:14px;background:#2d6a2d;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:15px;transition:background .2s}
+.btn:hover{background:#245224}
+.result-card{background:#fff;border-radius:15px;box-shadow:0 3px 16px rgba(45,106,45,.11);width:100%;max-width:480px;overflow:hidden;display:none}
+.result-header{background:#2d6a2d;color:#fff;padding:14px 18px 12px}
+.rh-sub{font-size:12px;opacity:.8;margin-bottom:2px}
+.rh-winner{font-size:24px;font-weight:800}
+.rh-price{font-size:17px;font-weight:700;margin-top:2px}
+.info-row{display:flex;gap:7px;padding:12px 16px 0;flex-wrap:wrap}
+.chip{background:#f4f7f0;border-radius:7px;padding:7px 9px;font-size:10px;color:#5a7a5a;font-weight:500;flex:1;min-width:90px}
+.chip span{display:block;font-weight:700;color:#2d6a2d;font-size:12px;margin-top:1px}
+.warn{margin:6px 16px 0;padding:7px 10px;background:#fff8e1;border-radius:7px;border:1px solid #ffe082;font-size:10px;color:#856404;line-height:1.5}
+.sped-status{margin:8px 16px 0;padding:9px 12px;border-radius:8px;font-size:11px;line-height:1.5}
+.sped-loading{background:#f0f7ff;border:1px solid #90caf9;color:#1565c0}
+.sped-error{background:#fff8e1;border:1px solid #ffe082;color:#856404}
+.sped-raw{background:#f9f9f9;border:1px solid #e0e0e0;color:#555;font-size:9px;word-break:break-all;margin-top:4px;padding:5px;border-radius:5px;max-height:60px;overflow:auto}
+.carrier-list{padding:12px 16px}
+.carrier-list h4{font-size:10px;font-weight:700;color:#9ab89a;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px}
+.crow{display:flex;align-items:flex-start;justify-content:space-between;padding:9px 11px;border-radius:8px;margin-bottom:6px;border:2px solid transparent}
+.crow.best{background:#edf7ed;border-color:#2d6a2d}
+.crow.ok{background:#fafcf8;border-color:#e0ebd8}
+.crow.na{background:#fafafa;border-color:#efefef;opacity:.55}
+.cname{font-size:13px;font-weight:600;color:#222;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cbadge{font-size:9px;font-weight:700;padding:2px 5px;border-radius:14px}
+.cbadge.best{background:#2d6a2d;color:#fff}
+.cbadge.ok{background:#e0ebd8;color:#2d6a2d}
+.cbadge.na{background:#efefef;color:#aaa}
+.cnote{font-size:9px;color:#9ab89a;margin-top:2px}
+.csur{font-size:9px;color:#7a9a7a;margin-top:3px;line-height:1.6}
+.csur-row{display:flex;justify-content:space-between;gap:8px}
+.cprice{font-size:14px;font-weight:700;color:#2d6a2d;text-align:right;white-space:nowrap}
+.cprice.na{color:#ccc}
+.cprice-sub{font-size:9px;color:#9ab89a;text-align:right}
+.disc{font-size:9px;color:#b0c8b0;padding:0 16px 12px;line-height:1.5;margin-top:4px}
+.reset-btn{width:calc(100% - 32px);margin:0 16px 14px;padding:10px;background:#f4f7f0;color:#2d6a2d;border:2px solid #e0ebd8;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.reset-btn:hover{background:#e0ebd8}
+</style>
+</head>
+<body>
+<div class="logo">
+  <div class="logo-icon">🌲</div>
+  <div>
+    <div class="logo-text">Gartenholz.org</div>
+    <div class="logo-sub">Versandkosten-Rechner · Intern</div>
+  </div>
+</div>
+<div class="subtitle">Lager Finnentrop · GLS · DPD · Spedition · Eigenfahrt</div>
+<div class="card">
+  <div class="step-label"><div class="step-badge">1</div> Land &amp; Empfänger</div>
+  <select id="country" onchange="checkCountry()">
+    <option value="">🌍 Land auswählen…</option>
+    <option value="DE">🇩🇪 Deutschland</option>
+    <optgroup label="Zone 1A"><option value="AT">🇦🇹 Österreich</option><option value="BE">🇧🇪 Belgien</option><option value="LU">🇱🇺 Luxemburg</option><option value="NL">🇳🇱 Niederlande</option></optgroup>
+    <optgroup label="Zone 1B"><option value="CH">🇨🇭 Schweiz</option><option value="CZ">🇨🇿 Tschechien</option><option value="DK">🇩🇰 Dänemark</option></optgroup>
+    <optgroup label="Zone 1C"><option value="FR">🇫🇷 Frankreich</option><option value="GB">🇬🇧 Großbritannien</option></optgroup>
+    <optgroup label="Zone 1D"><option value="HU">🇭🇺 Ungarn</option><option value="IT">🇮🇹 Italien</option><option value="PL">🇵🇱 Polen</option><option value="SK">🇸🇰 Slowakei</option><option value="SI">🇸🇮 Slowenien</option></optgroup>
+    <optgroup label="Zone 1E"><option value="ES">🇪🇸 Spanien</option><option value="IE">🇮🇪 Irland</option><option value="PT">🇵🇹 Portugal</option><option value="SE">🇸🇪 Schweden</option></optgroup>
+    <optgroup label="Zone 1F"><option value="EE">🇪🇪 Estland</option><option value="FI">🇫🇮 Finnland</option><option value="HR">🇭🇷 Kroatien</option><option value="LT">🇱🇹 Litauen</option><option value="LV">🇱🇻 Lettland</option><option value="NO">🇳🇴 Norwegen</option></optgroup>
+    <optgroup label="Zone 1G"><option value="BG">🇧🇬 Bulgarien</option><option value="GR">🇬🇷 Griechenland</option><option value="RO">🇷🇴 Rumänien</option><option value="RS">🇷🇸 Serbien</option></optgroup>
+  </select>
+  <div class="row2" style="margin-top:9px">
+    <div><label class="lbl">📮 Ziel-PLZ</label><input type="text" id="plz" placeholder="z.B. 80331" maxlength="10"></div>
+    <div><label class="lbl">👤 Empfängertyp</label>
+      <select id="custType"><option value="b2b">Gewerblich (B2B)</option><option value="b2c">Privatkunde (B2C)</option></select>
+    </div>
+  </div>
+  <div id="spedHint" style="display:none;font-size:10px;color:#e07a00;margin-top:6px;text-align:center">ℹ️ Speditionsabfrage nur für Deutschland verfügbar.</div>
+</div>
+<div class="card">
+  <div class="step-label"><div class="step-badge">2</div> Maße &amp; Gewicht</div>
+  <div class="grid2">
+    <div><label class="lbl">📏 Länge (cm)</label><input type="number" id="len" placeholder="z.B. 200" min="1"></div>
+    <div><label class="lbl">📐 Breite (cm)</label><input type="number" id="wid" placeholder="z.B. 60" min="1"></div>
+    <div><label class="lbl">📦 Höhe (cm)</label><input type="number" id="hei" placeholder="z.B. 40" min="1"></div>
+    <div><label class="lbl">⚖️ Gewicht (kg)</label><input type="number" id="wgt" placeholder="z.B. 25" min="0.1" step="0.1"></div>
+  </div>
+  <div class="hint">Alle Angaben in cm / kg · Volumengewicht wird automatisch berechnet</div>
+  <button class="btn" onclick="calculate()">🔍 Jetzt berechnen</button>
+</div>
+<div class="result-card" id="resultCard">
+  <div class="result-header">
+    <div class="rh-sub">✅ Günstigster Anbieter (inkl. aller Zuschläge, netto)</div>
+    <div class="rh-winner" id="winnerName">–</div>
+    <div class="rh-price" id="winnerPrice">–</div>
+  </div>
+  <div class="info-row" id="infoRow"></div>
+  <div id="warnArea"></div>
+  <div id="spedStatusArea"></div>
+  <div class="carrier-list">
+    <h4>Alle Anbieter im Vergleich</h4>
+    <div id="carrierList"></div>
+  </div>
+  <div class="disc">Alle Preise netto zzgl. MwSt. · GLS Energiezuschlag 21% · DPD 17% · Maut eingerechnet. Saisonzuschläge &amp; Diesel-Floater nicht enthalten. Preise Stand 2025.</div>
+  <button class="reset-btn" onclick="resetForm()">↩ Neue Berechnung</button>
+</div>
+<script>
+const GLS_DE=[{m:3,p:3.31},{m:5,p:4.30},{m:10,p:4.65},{m:15,p:4.80},{m:20,p:4.90},{m:25,p:5.13},{m:31.5,p:5.35},{m:40,p:23.75}];
+const GLS_EU={'1A':{cc:['AT','BE','LU','NL'],r:[{m:2,p:6.66},{m:5,p:7.22},{m:10,p:8.31},{m:15,p:9.20},{m:20,p:10.97},{m:25,p:11.16},{m:30,p:14.17},{m:40,p:22.68}]},'1B':{cc:['CH','CZ','DK'],r:[{m:2,p:8.91},{m:5,p:9.61},{m:10,p:10.69},{m:15,p:11.97},{m:20,p:17.13},{m:25,p:17.42},{m:30,p:18.87},{m:40,p:35.12}]},'1C':{cc:['FR','GB'],r:[{m:2,p:11.10},{m:5,p:11.79},{m:10,p:12.62},{m:15,p:14.40},{m:20,p:16.84},{m:25,p:17.13},{m:30,p:19.31},{m:40,p:31.74}]},'1D':{cc:['HU','IT','PL','SK','SI'],r:[{m:2,p:11.52},{m:5,p:12.93},{m:10,p:13.80},{m:15,p:14.86},{m:20,p:17.37},{m:25,p:17.68},{m:30,p:22.11},{m:40,p:33.28}]},'1E':{cc:['ES','IE','PT','SE'],r:[{m:2,p:15.35},{m:5,p:17.39},{m:10,p:18.45},{m:15,p:19.65},{m:20,p:21.79},{m:25,p:22.18},{m:30,p:25.60},{m:40,p:40.23}]},'1F':{cc:['EE','FI','HR','LT','LV','NO'],r:[{m:2,p:15.08},{m:5,p:16.57},{m:10,p:17.67},{m:15,p:18.97},{m:20,p:26.21},{m:25,p:26.68},{m:30,p:28.93},{m:40,p:37.27}]},'1G':{cc:['BG','GR','RO','RS'],r:[{m:2,p:20.52},{m:5,p:24.74},{m:10,p:25.95},{m:15,p:30.17},{m:20,p:32.27},{m:25,p:32.84},{m:30,p:35.53},{m:40,p:45.63}]}};
+const DPD_DE=[{m:3,p:3.87},{m:5,p:4.02},{m:10,p:4.15},{m:15,p:4.28},{m:20,p:4.38},{m:25,p:4.87},{m:31.5,p:5.01}];
+const DPD_EU={'1A':{cc:['AT','BE','LU','NL'],r:[{m:3,p:15.14},{m:5,p:16.70},{m:10,p:18.43},{m:15,p:20.48},{m:20,p:23.06},{m:25,p:26.89},{m:31.5,p:29.45}]},'1B':{cc:['CH','CZ','DK'],r:[{m:3,p:18.18},{m:5,p:19.87},{m:10,p:21.87},{m:15,p:24.33},{m:20,p:27.41},{m:25,p:32.03},{m:31.5,p:35.11}]},'1C':{cc:['FR','GB'],r:[{m:3,p:22.69},{m:5,p:24.84},{m:10,p:27.38},{m:15,p:30.48},{m:20,p:34.39},{m:25,p:40.23},{m:31.5,p:44.12}]},'1D':{cc:['HU','IT','PL','SK','SI'],r:[{m:3,p:26.92},{m:5,p:29.48},{m:10,p:32.52},{m:15,p:36.25},{m:20,p:43.78},{m:25,p:51.27},{m:31.5,p:56.25}]},'1E':{cc:['ES','IE','PT','SE'],r:[{m:3,p:32.86},{m:5,p:36.04},{m:10,p:40.29},{m:15,p:44.34},{m:20,p:50.07},{m:25,p:58.67},{m:31.5,p:64.40}]},'1F':{cc:['EE','FI','HR','LT','LV','NO'],r:[{m:3,p:39.97},{m:5,p:43.83},{m:10,p:48.38},{m:15,p:54.01},{m:20,p:61.02},{m:25,p:71.57},{m:31.5,p:78.58}]},'1G':{cc:['BG','GR','RO','RS'],r:[{m:3,p:69.23},{m:5,p:76.02},{m:10,p:84.03},{m:15,p:93.92},{m:20,p:106.26},{m:25,p:124.76},{m:31.5,p:137.09}]}};
+const KM={DE:250,AT:650,BE:350,LU:320,NL:280,CH:680,CZ:700,DK:500,FR:600,GB:900,HU:900,IT:1100,PL:750,SK:800,SI:950,ES:1600,IE:1400,PT:1800,SE:800,EE:1500,FI:1700,HR:1050,LT:1400,LV:1400,NO:1200,BG:1600,GR:1700,RO:1450,RS:1250};
+function lr(r,kg){for(let x of r)if(kg<=(x.maxKg||x.m))return x.base||x.p;return null;}
+const fmt=v=>v.toFixed(2).replace('.',',')+' €';
+function calcGLS(l,b,h,kg,cc,b2c){const gurt=l+2*(b+h),v5=(l*b*h)/5000,v6=(l*b*h)/6000,vl=(l*b*h)/1000,items=[];if(cc==='DE'){if(l>200||b>200||h>200)return{possible:false,note:'Seite >200 cm'};if(gurt>300)return{possible:false,note:'Gurtmaß >300 cm'};const rg=Math.max(kg,v5);if(rg>40)return{possible:false,note:'Rechengewicht >40 kg'};const base=lr(GLS_DE,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`Basispreis (${rg.toFixed(1)} kg)`,v:base});if(l>120)items.push({l:'Überlänge >120 cm',v:2.50});if(vl>150)items.push({l:'Großpaket >150 L',v:2.50});if(b2c)items.push({l:'Privatkundenlieferung',v:0.35});items.push({l:'Maut',v:0.37});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 21%',v:parseFloat((s*0.21).toFixed(2))});}else{let zone=null,zk=null;for(let[k,z]of Object.entries(GLS_EU))if(z.cc.includes(cc)){zone=z;zk=k;break;}if(!zone)return{possible:false,note:'Land nicht im Tarif'};const rg=Math.max(kg,v6);if(rg>40||l>200||gurt>300)return{possible:false,note:'Maße/Gewicht überschritten'};const base=lr(zone.r,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`EBP Zone ${zk} (${rg.toFixed(1)} kg)`,v:base});if(l>120)items.push({l:'Überlänge >120 cm',v:2.50});if(vl>150)items.push({l:'Großpaket >150 L',v:2.50});const s1=items.reduce((a,i)=>a+i.v,0);items.push({l:'Maut intl. 5%',v:parseFloat((s1*0.05).toFixed(2))});const s2=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 21%',v:parseFloat((s2*0.21).toFixed(2))});}return{possible:true,price:items.reduce((a,i)=>a+i.v,0),items,note:'GLS via MRPacket'};}
+function calcDPD(l,b,h,kg,cc){const gurt=l+2*(b+h),v5=(l*b*h)/5000,vl=(l*b*h)/1000,items=[];if(cc==='DE'){if(l>175||gurt>300)return{possible:false,note:'Überlänge/Übergurtmaß'};const rg=Math.max(kg,v5);if(rg>40)return{possible:false,note:'Rechengewicht >40 kg'};if(rg>31.5){items.push({l:'Basispreis 31,5 kg',v:5.01});items.push({l:'Übergewicht-Zuschlag',v:54.00});}else{const base=lr(DPD_DE,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`Basispreis (${rg.toFixed(1)} kg)`,v:base});}if(l>120)items.push({l:'NC-Zuschlag >120 cm',v:7.50});else if(b>60||h>60)items.push({l:'NC-Zuschlag Seite >60 cm',v:7.50});else if(vl>150)items.push({l:'NC-Zuschlag >150 Liter',v:7.50});items.push({l:'Sicherheitszuschlag',v:0.17});items.push({l:'Maut',v:0.38});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 17%',v:parseFloat((s*0.17).toFixed(2))});}else{let zone=null,zk=null;for(let[k,z]of Object.entries(DPD_EU))if(z.cc.includes(cc)){zone=z;zk=k;break;}if(!zone)return{possible:false,note:'Land nicht im Tarif'};const rg=Math.max(kg,v5);if(rg>31.5||l>175||gurt>300)return{possible:false,note:'Maße/Gewicht überschritten'};const base=lr(zone.r,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`DPD Classic EU Zone ${zk} (${rg.toFixed(1)} kg)`,v:base});if(l>120)items.push({l:'NC-Zuschlag >120 cm',v:7.50});else if(b>60||h>60)items.push({l:'NC-Zuschlag Seite >60 cm',v:7.50});else if(vl>150)items.push({l:'NC-Zuschlag >150 Liter',v:7.50});items.push({l:'Sicherheitszuschlag',v:0.17});items.push({l:'Maut',v:0.38});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 17%',v:parseFloat((s*0.17).toFixed(2))});}return{possible:true,price:items.reduce((a,i)=>a+i.v,0),items,note:'DPD Classic via MRPacket'};}
+function calcEigen(cc){const km=KM[cc];if(!km)return{possible:false,note:'Entfernung unbekannt'};return{possible:true,price:km*2*1.20,items:[{l:`${km} km × 2 × 1,20 €`,v:km*2*1.20}],note:'Eigenfahrt ab Finnentrop'};}
+function checkCountry(){const cc=document.getElementById('country').value;document.getElementById('spedHint').style.display=(cc&&cc!=='DE')?'block':'none';}
+function renderCarriers(carriers){const possible=carriers.filter(c=>c.result.possible).sort((a,b)=>a.result.price-b.result.price);const best=possible[0];document.getElementById('winnerName').textContent=best?`${best.icon} ${best.name}`:'⚠️ Kein Anbieter';document.getElementById('winnerPrice').textContent=best?fmt(best.result.price)+' netto':'–';let html='';carriers.forEach(c=>{const isBest=best&&c.id===best.id;const cls=!c.result.possible?'na':isBest?'best':'ok';const bcls=!c.result.possible?'na':isBest?'best':'ok';const btxt=!c.result.possible?'N/A':isBest?'✓ Günstigste':'Verfügbar';let sur='';if(c.result.possible&&c.result.items)sur='<div class="csur">'+c.result.items.map(i=>`<div class="csur-row"><span>${i.l}</span><span>${fmt(i.v)}</span></div>`).join('')+'</div>';html+=`<div class="crow ${cls}"><div style="flex:1"><div class="cname">${c.icon} ${c.name} <span class="cbadge ${bcls}">${btxt}</span></div><div class="cnote">${c.result.note||''}</div>${sur}</div><div style="text-align:right;min-width:70px;padding-left:8px"><div class="cprice${c.result.possible?'':' na'}">${c.result.possible?fmt(c.result.price):'—'}</div>${c.result.possible?'<div class="cprice-sub">netto</div>':''}</div></div>`;});document.getElementById('carrierList').innerHTML=html;}
+async function fetchSpedition(plz,l,b,h,kg){const area=document.getElementById('spedStatusArea');area.innerHTML='<div class="sped-status sped-loading">⏳ Speditionspreise werden abgerufen…</div>';try{const resp=await fetch('/.netlify/functions/spedition',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plz,l,b,h,kg})});const json=await resp.json();const price=json.price??json.total_price??json.netto??json.data?.price??json.offers?.[0]?.price??null;if(price!=null){const p=parseFloat(price);area.innerHTML=`<div class="sped-status" style="background:#edf7ed;border:1px solid #2d6a2d;color:#2d6a2d">✅ Cargo International: <strong>${fmt(p)}</strong> netto</div>`;return{id:'sped',name:'Cargo International (Spedition)',icon:'🚚',result:{possible:true,price:p,items:[{l:'Spedition Live-Preis',v:p}],note:'Cargo International via API'}};}else{area.innerHTML=`<div class="sped-status sped-error">⚠️ Antwort erhalten, Preis nicht erkannt.<div class="sped-raw">${JSON.stringify(json).substring(0,300)}</div></div>`;return null;}}catch(e){area.innerHTML=`<div class="sped-status sped-error">⚠️ Speditionsabfrage fehlgeschlagen: ${e.message}</div>`;return null;}}
+async function calculate(){const cc=document.getElementById('country').value;const plz=document.getElementById('plz').value.trim();const b2c=document.getElementById('custType').value==='b2c';const l=parseFloat(document.getElementById('len').value);const b=parseFloat(document.getElementById('wid').value);const h=parseFloat(document.getElementById('hei').value);const kg=parseFloat(document.getElementById('wgt').value);if(!cc||!l||!b||!h||!kg)return alert('Bitte alle Felder ausfüllen.');const gls=calcGLS(l,b,h,kg,cc,b2c);const dpd=calcDPD(l,b,h,kg,cc);const eigen=calcEigen(cc);let carriers=[{id:'gls',name:'GLS via MRPacket',icon:'🟡',result:gls},{id:'dpd',name:'DPD via MRPacket',icon:'🔴',result:dpd},{id:'eigen',name:'Eigenfahrt',icon:'🚐',result:eigen}];const gurt=l+2*(b+h),vl=(l*b*h)/1000,vg=(l*b*h)/5000;document.getElementById('infoRow').innerHTML=[['Gurtmaß',Math.round(gurt)+' cm'],['Volumen',Math.round(vl)+' L'],['Vol.gew.',vg.toFixed(1)+' kg'],['Realgew.',kg+' kg']].map(([k,v])=>`<div class="chip">${k}<span>${v}</span></div>`).join('');let warns='';if(gurt>240&&gurt<=300)warns+=`<div class="warn">⚠️ Gurtmaß ${Math.round(gurt)} cm → Sonderhandling möglich</div>`;if(l>120)warns+=`<div class="warn">⚠️ Länge ${l} cm → Überlänge-Zuschläge greifen</div>`;if(vl>150)warns+=`<div class="warn">⚠️ Volumen ${Math.round(vl)} L → Großpaket-Zuschlag</div>`;document.getElementById('warnArea').innerHTML=warns;document.getElementById('spedStatusArea').innerHTML='';renderCarriers(carriers);const rc=document.getElementById('resultCard');rc.style.display='block';rc.scrollIntoView({behavior:'smooth',block:'start'});if(cc==='DE'&&plz.length>=4){const sped=await fetchSpedition(plz,l,b,h,kg);if(sped){carriers.push(sped);renderCarriers(carriers);}}}
+function resetForm(){document.getElementById('resultCard').style.display='none';document.getElementById('country').value='';document.getElementById('custType').value='b2b';document.getElementById('plz').value='';['len','wid','hei','wgt'].forEach(id=>document.getElementById(id).value='');document.getElementById('spedHint').style.display='none';window.scrollTo({top:0,behavior:'smooth'});}
+</script>
+</body>
+</html>
