@@ -110,7 +110,7 @@ exports.handler = async function(event) {
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ ...data, km_eigenfahrt: kmEigenfahrt }),
+      body: JSON.stringify({ ...data, km: kmEigenfahrt }),
     };
   } catch (err) {
     return {
