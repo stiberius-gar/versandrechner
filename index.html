@@ -287,7 +287,8 @@ async function fetchSendify(plz, l, b, h, kg) {
 function renderCarriers(carriers){
   const possible=carriers.filter(c=>c.result.possible&&!c.result.loading).sort((a,b)=>a.result.price-b.result.price);
   const best=possible[0];
-  document.getElementById('winnerName').textContent=best?`${best.icon} ${best.name}`:'⏳ Wird geladen…';
+  const stillLoading=carriers.some(c=>c.result.loading);
+  document.getElementById('winnerName').textContent=best?`${best.icon} ${best.name}`:stillLoading?'⏳ Wird berechnet…':'⚠️ Kein Anbieter';
   document.getElementById('winnerPrice').textContent=best?fmt(best.result.price)+' netto':'–';
   let html='';
   carriers.forEach(c=>{
