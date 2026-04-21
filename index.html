@@ -3,397 +3,436 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Versandkosten-Rechner · Gartenholz.org</title>
+<title>Versandpreis-Rechner · Gartenholz.org</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f7f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:18px 12px}
-.logo{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.logo-icon{width:42px;height:42px;background:#2d6a2d;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.logo-text{font-size:20px;font-weight:700;color:#2d6a2d}
-.logo-sub{font-size:11px;color:#6b8f6b;margin-top:-1px}
-.subtitle{color:#6b8f6b;font-size:12px;margin-bottom:20px}
-.card{background:#fff;border-radius:15px;box-shadow:0 3px 16px rgba(45,106,45,.09);padding:20px;width:100%;max-width:520px;margin-bottom:13px}
-.step-label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#2d6a2d;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
-.step-badge{background:#2d6a2d;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
-select,input{width:100%;padding:11px 13px;border:2px solid #e0ebd8;border-radius:8px;font-size:14px;color:#222;background:#fafcf8;outline:none;transition:border .2s}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4ee;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 12px}
+.header{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.logo-icon{width:44px;height:44px;background:#2d6a2d;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 2px 8px rgba(45,106,45,.3)}
+.logo-text{font-size:21px;font-weight:800;color:#1a4a1a}
+.logo-sub{font-size:11px;color:#7a9a7a;margin-top:1px}
+.subtitle{font-size:11px;color:#9ab89a;margin-bottom:22px}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(45,106,45,.08);padding:20px;width:100%;max-width:540px;margin-bottom:14px}
+.card-title{font-size:11px;font-weight:700;color:#2d6a2d;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.step{background:#2d6a2d;color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
+label.lbl{display:block;font-size:10px;font-weight:600;color:#6b8f6b;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+select,input[type=text],input[type=number]{width:100%;padding:10px 12px;border:2px solid #e0ead8;border-radius:9px;font-size:14px;color:#1a2e1a;background:#fafcf8;outline:none;transition:border-color .15s}
 select:focus,input:focus{border-color:#2d6a2d;background:#fff}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232d6a2d' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;padding-right:38px;appearance:none}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
-.lbl{display:block;font-size:10px;font-weight:600;color:#5a7a5a;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
-.hint{font-size:10px;color:#9ab89a;margin-top:6px;text-align:center}
-.btn{width:100%;padding:14px;background:#2d6a2d;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:15px;transition:background .2s}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232d6a2d' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;background-size:14px;padding-right:34px;appearance:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.field{margin-bottom:10px}
+.toggle{display:flex;background:#f0f4ee;border-radius:10px;padding:3px;margin-bottom:16px;gap:3px}
+.toggle-btn{flex:1;padding:9px;border:none;border-radius:8px;background:transparent;color:#7a9a7a;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;text-align:center}
+.toggle-btn.active{background:#fff;color:#2d6a2d;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.preview{background:#f0f4ee;border-radius:10px;padding:12px;margin-top:12px;border:1px solid #d8e8d0;font-size:12px;color:#3a5a3a;line-height:1.9}
+.preview b{color:#2d6a2d}
+.tag{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:700;margin-left:5px;vertical-align:middle}
+.tag-p{background:#dbeafe;color:#1d4ed8}
+.tag-pal{background:#fef3c7;color:#92400e}
+.sped-box{background:#fff7ed;border:2px dashed #fbbf24;border-radius:10px;padding:14px;margin-top:14px}
+.sped-box .lbl{color:#92400e}
+.sped-box input{border-color:#fde68a;background:#fffbeb}
+.sped-box input:focus{border-color:#f59e0b}
+.sped-note{font-size:10px;color:#b45309;margin-top:6px;line-height:1.5}
+.btn{width:100%;padding:14px;background:#2d6a2d;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s;margin-top:14px}
 .btn:hover{background:#245224}
-.sendung-box{background:#f4f7f0;border-radius:10px;padding:14px;margin-top:14px;border:2px solid #e0ebd8}
-.sendung-title{font-size:12px;font-weight:700;color:#2d6a2d;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
-.sendung-detail{font-size:12px;color:#444;line-height:1.8}
-.sendung-detail b{color:#2d6a2d}
-.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;margin-left:6px}
-.tag-paket{background:#e3f2fd;color:#1565c0}
-.tag-palette{background:#fff3e0;color:#e65100}
-.result-card{background:#fff;border-radius:15px;box-shadow:0 3px 16px rgba(45,106,45,.11);width:100%;max-width:520px;overflow:hidden;display:none}
-.result-header{background:#2d6a2d;color:#fff;padding:14px 18px 12px}
-.rh-sub{font-size:12px;opacity:.8;margin-bottom:2px}
-.rh-winner{font-size:22px;font-weight:800}
-.rh-price{font-size:17px;font-weight:700;margin-top:2px}
-.info-row{display:flex;gap:7px;padding:12px 16px 0;flex-wrap:wrap}
-.chip{background:#f4f7f0;border-radius:7px;padding:7px 9px;font-size:10px;color:#5a7a5a;font-weight:500;flex:1;min-width:80px}
-.chip span{display:block;font-weight:700;color:#2d6a2d;font-size:12px;margin-top:1px}
-.warn{margin:6px 16px 0;padding:7px 10px;background:#fff8e1;border-radius:7px;border:1px solid #ffe082;font-size:10px;color:#856404;line-height:1.5}
-.sped-status{margin:8px 16px 0;padding:9px 12px;border-radius:8px;font-size:11px;line-height:1.5}
-.sped-loading{background:#f0f7ff;border:1px solid #90caf9;color:#1565c0}
-.sped-error{background:#fff8e1;border:1px solid #ffe082;color:#856404}
-.sped-raw{font-size:9px;word-break:break-all;margin-top:4px;max-height:50px;overflow:auto}
-.carrier-list{padding:12px 16px}
-.carrier-list h4{font-size:10px;font-weight:700;color:#9ab89a;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px}
-.crow{display:flex;align-items:flex-start;justify-content:space-between;padding:9px 11px;border-radius:8px;margin-bottom:6px;border:2px solid transparent}
+.result{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(45,106,45,.13);width:100%;max-width:540px;overflow:hidden;display:none}
+.winner-bar{background:linear-gradient(135deg,#2d6a2d,#3d8a3d);color:#fff;padding:18px 20px 16px}
+.winner-label{font-size:11px;opacity:.75;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}
+.winner-carrier{font-size:22px;font-weight:800;margin-bottom:2px}
+.winner-price{font-size:30px;font-weight:900;letter-spacing:-.5px}
+.winner-sub{font-size:11px;opacity:.7;margin-top:3px}
+.info-chips{display:flex;gap:8px;padding:14px 16px 0;flex-wrap:wrap}
+.chip{background:#f0f4ee;border-radius:8px;padding:7px 10px;font-size:10px;color:#6b8f6b;font-weight:500;flex:1;min-width:90px}
+.chip span{display:block;font-weight:700;color:#1a4a1a;font-size:12px;margin-top:2px}
+.section{padding:14px 16px 0}
+.section-title{font-size:10px;font-weight:700;color:#9ab89a;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.crow{display:flex;align-items:flex-start;justify-content:space-between;padding:10px 12px;border-radius:10px;margin-bottom:7px;border:2px solid transparent}
 .crow.best{background:#edf7ed;border-color:#2d6a2d}
-.crow.ok{background:#fafcf8;border-color:#e0ebd8}
-.crow.na{background:#fafafa;border-color:#efefef;opacity:.55}
-.crow.loading{background:#f0f7ff;border-color:#90caf9;opacity:.8}
-.cname{font-size:13px;font-weight:600;color:#222;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.cbadge{font-size:9px;font-weight:700;padding:2px 5px;border-radius:14px}
-.cbadge.best{background:#2d6a2d;color:#fff}
-.cbadge.ok{background:#e0ebd8;color:#2d6a2d}
-.cbadge.na{background:#efefef;color:#aaa}
-.cbadge.loading{background:#bbdefb;color:#1565c0}
-.cnote{font-size:9px;color:#9ab89a;margin-top:2px}
-.csur{font-size:9px;color:#7a9a7a;margin-top:3px;line-height:1.6}
-.csur-row{display:flex;justify-content:space-between;gap:8px}
-.cprice{font-size:14px;font-weight:700;color:#2d6a2d;text-align:right;white-space:nowrap}
-.cprice.na{color:#ccc}
-.cprice.loading{color:#90caf9}
-.cprice-sub{font-size:9px;color:#9ab89a;text-align:right}
-.disc{font-size:9px;color:#b0c8b0;padding:0 16px 12px;line-height:1.5;margin-top:4px}
-.reset-btn{width:calc(100% - 32px);margin:0 16px 14px;padding:10px;background:#f4f7f0;color:#2d6a2d;border:2px solid #e0ebd8;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
-.reset-btn:hover{background:#e0ebd8}
-.mode-toggle{display:flex;gap:8px;margin-bottom:14px}
-.mode-btn{flex:1;padding:10px;border:2px solid #e0ebd8;border-radius:9px;background:#fafcf8;color:#5a7a5a;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
-.mode-btn.active{border-color:#2d6a2d;background:#edf7ed;color:#2d6a2d}
+.crow.ok{background:#fafcf8;border-color:#e0ead8}
+.crow.na{background:#f8f8f8;border-color:#efefef;opacity:.5}
+.c-left{flex:1}
+.c-name{font-size:13px;font-weight:600;color:#1a2e1a;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px}
+.badge.best{background:#2d6a2d;color:#fff}
+.badge.ok{background:#d8e8d0;color:#2d6a2d}
+.badge.na{background:#efefef;color:#aaa}
+.c-note{font-size:9px;color:#9ab89a;margin-top:2px}
+.c-breakdown{margin-top:6px}
+.c-row{display:flex;justify-content:space-between;font-size:10px;color:#6b8f6b;line-height:1.85;gap:8px}
+.c-row.subtotal{font-weight:700;color:#2d6a2d;border-top:1px solid #e0ead8;margin-top:3px;padding-top:3px}
+.c-row.customer{font-weight:800;color:#1a4a1a;font-size:12px;background:#edf7ed;padding:4px 6px;border-radius:6px;margin-top:4px}
+.c-price{text-align:right;min-width:85px;padding-left:10px;flex-shrink:0}
+.price-customer{font-size:16px;font-weight:800;color:#2d6a2d}
+.price-sub{font-size:9px;color:#9ab89a;text-align:right;margin-top:1px}
+.price-na{font-size:14px;color:#ccc}
+.warn-box{margin:8px 16px 0;padding:8px 10px;background:#fff8e1;border-radius:8px;border:1px solid #ffe082;font-size:10px;color:#856404;line-height:1.6}
+.disc{font-size:9px;color:#b0c8b0;padding:10px 16px 14px;line-height:1.6;margin-top:6px}
+.reset-btn{width:calc(100% - 32px);margin:0 16px 16px;padding:10px;background:#f0f4ee;color:#2d6a2d;border:2px solid #d8e8d0;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer}
+.reset-btn:hover{background:#d8e8d0}
+.settings-toggle{font-size:11px;color:#9ab89a;cursor:pointer;margin-bottom:8px;text-align:center}
+.settings-toggle:hover{color:#2d6a2d}
+.settings-panel{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(45,106,45,.08);padding:16px 20px;width:100%;max-width:540px;display:none;margin-bottom:14px}
 </style>
 </head>
 <body>
-<div class="logo">
+
+<div class="header">
   <div class="logo-icon">🌲</div>
   <div>
     <div class="logo-text">Gartenholz.org</div>
-    <div class="logo-sub">Versandkosten-Rechner · Intern</div>
+    <div class="logo-sub">Versandpreis-Rechner · Intern</div>
   </div>
 </div>
-<div class="subtitle">Lager Finnentrop · GLS · DPD · Sendify · Eigenfahrt</div>
+<div class="subtitle">Kundenpreis inkl. Verpackung &amp; Marge · Lager Finnentrop</div>
+
+<div class="settings-toggle" onclick="toggleSettings()">⚙️ Margen &amp; Kosten anpassen</div>
+<div class="settings-panel" id="settingsPanel">
+  <div class="card-title" style="margin-bottom:14px">⚙️ Kalkulations-Einstellungen</div>
+  <div class="grid2" style="margin-bottom:10px">
+    <div><label class="lbl">Paket-Marge (%)</label><input type="number" id="setPaketMarge" value="20" min="0" max="500" step="1"></div>
+    <div><label class="lbl">Spedition Aufschlag (€)</label><input type="number" id="setSpedAufschlag" value="10" min="0" step="0.5"></div>
+  </div>
+  <div class="grid2">
+    <div><label class="lbl">Verpackung Paket (€)</label><input type="number" id="setVerpPaket" value="2.00" min="0" step="0.1"></div>
+    <div><label class="lbl">Verpackung Palette (€)</label><input type="number" id="setVerpPalette" value="5.00" min="0" step="0.5"></div>
+  </div>
+</div>
+
 <div class="card">
-  <div class="step-label"><div class="step-badge">1</div> Land &amp; Empfänger</div>
-  <select id="country" onchange="checkCountry()">
-    <option value="">🌍 Land auswählen…</option>
-    <option value="DE">🇩🇪 Deutschland</option>
-    <optgroup label="Zone 1A"><option value="AT">🇦🇹 Österreich</option><option value="BE">🇧🇪 Belgien</option><option value="LU">🇱🇺 Luxemburg</option><option value="NL">🇳🇱 Niederlande</option></optgroup>
-    <optgroup label="Zone 1B"><option value="CH">🇨🇭 Schweiz</option><option value="CZ">🇨🇿 Tschechien</option><option value="DK">🇩🇰 Dänemark</option></optgroup>
-    <optgroup label="Zone 1C"><option value="FR">🇫🇷 Frankreich</option><option value="GB">🇬🇧 Großbritannien</option></optgroup>
-    <optgroup label="Zone 1D"><option value="HU">🇭🇺 Ungarn</option><option value="IT">🇮🇹 Italien</option><option value="PL">🇵🇱 Polen</option><option value="SK">🇸🇰 Slowakei</option><option value="SI">🇸🇮 Slowenien</option></optgroup>
-    <optgroup label="Zone 1E"><option value="ES">🇪🇸 Spanien</option><option value="IE">🇮🇪 Irland</option><option value="PT">🇵🇹 Portugal</option><option value="SE">🇸🇪 Schweden</option></optgroup>
-    <optgroup label="Zone 1F"><option value="EE">🇪🇪 Estland</option><option value="FI">🇫🇮 Finnland</option><option value="HR">🇭🇷 Kroatien</option><option value="LT">🇱🇹 Litauen</option><option value="LV">🇱🇻 Lettland</option><option value="NO">🇳🇴 Norwegen</option></optgroup>
-    <optgroup label="Zone 1G"><option value="BG">🇧🇬 Bulgarien</option><option value="GR">🇬🇷 Griechenland</option><option value="RO">🇷🇴 Rumänien</option><option value="RS">🇷🇸 Serbien</option></optgroup>
-  </select>
-  <div class="grid2" style="margin-top:9px">
-    <div><label class="lbl">📮 Ziel-PLZ</label><input type="text" id="plz" placeholder="z.B. 80331" maxlength="10"></div>
+  <div class="card-title"><div class="step">1</div> Land &amp; Empfänger</div>
+  <div class="field">
+    <label class="lbl">🌍 Lieferland</label>
+    <select id="country">
+      <option value="">Land auswählen…</option>
+      <option value="DE">🇩🇪 Deutschland</option>
+      <optgroup label="Zone 1A"><option value="AT">🇦🇹 Österreich</option><option value="BE">🇧🇪 Belgien</option><option value="LU">🇱🇺 Luxemburg</option><option value="NL">🇳🇱 Niederlande</option></optgroup>
+      <optgroup label="Zone 1B"><option value="CH">🇨🇭 Schweiz</option><option value="CZ">🇨🇿 Tschechien</option><option value="DK">🇩🇰 Dänemark</option></optgroup>
+      <optgroup label="Zone 1C"><option value="FR">🇫🇷 Frankreich</option><option value="GB">🇬🇧 Großbritannien</option></optgroup>
+      <optgroup label="Zone 1D"><option value="HU">🇭🇺 Ungarn</option><option value="IT">🇮🇹 Italien</option><option value="PL">🇵🇱 Polen</option><option value="SK">🇸🇰 Slowakei</option><option value="SI">🇸🇮 Slowenien</option></optgroup>
+      <optgroup label="Zone 1E"><option value="ES">🇪🇸 Spanien</option><option value="IE">🇮🇪 Irland</option><option value="PT">🇵🇹 Portugal</option><option value="SE">🇸🇪 Schweden</option></optgroup>
+      <optgroup label="Zone 1F"><option value="EE">🇪🇪 Estland</option><option value="FI">🇫🇮 Finnland</option><option value="HR">🇭🇷 Kroatien</option><option value="LT">🇱🇹 Litauen</option><option value="LV">🇱🇻 Lettland</option><option value="NO">🇳🇴 Norwegen</option></optgroup>
+      <optgroup label="Zone 1G"><option value="BG">🇧🇬 Bulgarien</option><option value="GR">🇬🇷 Griechenland</option><option value="RO">🇷🇴 Rumänien</option><option value="RS">🇷🇸 Serbien</option></optgroup>
+    </select>
+  </div>
+  <div class="grid2">
+    <div><label class="lbl">📮 Ziel-PLZ (optional)</label><input type="text" id="plz" placeholder="z.B. 80331" maxlength="10"></div>
     <div><label class="lbl">👤 Empfängertyp</label>
       <select id="custType"><option value="b2b">Gewerblich (B2B)</option><option value="b2c">Privatkunde (B2C)</option></select>
     </div>
   </div>
-  <div id="spedHint" style="display:none;font-size:10px;color:#e07a00;margin-top:6px;text-align:center">ℹ️ Sendify-Abfrage nur für Deutschland verfügbar.</div>
 </div>
+
 <div class="card">
-  <div class="step-label"><div class="step-badge">2</div> Produkt &amp; Menge</div>
-  <div class="mode-toggle">
-    <div class="mode-btn active" id="modeProdukt" onclick="setMode('produkt')">📦 Produkt eingeben</div>
-    <div class="mode-btn" id="modeManual" onclick="setMode('manual')">📐 Maße direkt eingeben</div>
+  <div class="card-title"><div class="step">2</div> Paket / Sendung</div>
+  <div class="toggle">
+    <div class="toggle-btn active" id="modeA" onclick="setMode('produkt')">📦 Produkt + Menge</div>
+    <div class="toggle-btn" id="modeB" onclick="setMode('manual')">📐 Maße direkt</div>
   </div>
-  <div id="produktModus">
+  <div id="modProdukt">
     <div class="grid3" style="margin-bottom:10px">
-      <div><label class="lbl">📏 Länge/Stück (cm)</label><input type="number" id="pLen" placeholder="z.B. 150" min="1" oninput="berechneVorschau()"></div>
-      <div><label class="lbl">📐 Breite/Stück (cm)</label><input type="number" id="pBre" placeholder="z.B. 10" min="1" oninput="berechneVorschau()"></div>
-      <div><label class="lbl">📦 Höhe/Stück (cm)</label><input type="number" id="pHoe" placeholder="z.B. 10" min="1" oninput="berechneVorschau()"></div>
+      <div><label class="lbl">Länge/Stück (cm)</label><input type="number" id="pL" placeholder="150" min="1" oninput="vorschau()"></div>
+      <div><label class="lbl">Breite/Stück (cm)</label><input type="number" id="pB" placeholder="10" min="1" oninput="vorschau()"></div>
+      <div><label class="lbl">Höhe/Stück (cm)</label><input type="number" id="pH" placeholder="10" min="1" oninput="vorschau()"></div>
     </div>
     <div class="grid2">
-      <div><label class="lbl">⚖️ Gewicht/Stück (kg)</label><input type="number" id="pGew" placeholder="z.B. 10" min="0.1" step="0.1" oninput="berechneVorschau()"></div>
-      <div><label class="lbl">🔢 Anzahl Stück</label><input type="number" id="pAnz" placeholder="z.B. 20" min="1" oninput="berechneVorschau()"></div>
+      <div><label class="lbl">Gewicht/Stück (kg)</label><input type="number" id="pG" placeholder="5" min="0.1" step="0.1" oninput="vorschau()"></div>
+      <div><label class="lbl">Anzahl Stück</label><input type="number" id="pA" placeholder="10" min="1" oninput="vorschau()"></div>
     </div>
-    <div class="hint">App berechnet automatisch ob Paket oder Palette und optimiert die Stapelweise</div>
-    <div class="sendung-box" id="sendungBox" style="display:none">
-      <div class="sendung-title">📋 Berechnete Sendung</div>
-      <div class="sendung-detail" id="sendungDetail"></div>
-    </div>
+    <div id="prevBox" style="display:none" class="preview"></div>
   </div>
-  <div id="manualModus" style="display:none">
+  <div id="modManual" style="display:none">
     <div class="grid2" style="margin-bottom:10px">
-      <div><label class="lbl">📏 Länge (cm)</label><input type="number" id="mLen" placeholder="z.B. 150" min="1"></div>
-      <div><label class="lbl">📐 Breite (cm)</label><input type="number" id="mBre" placeholder="z.B. 60" min="1"></div>
+      <div><label class="lbl">Länge (cm)</label><input type="number" id="mL" placeholder="150" min="1"></div>
+      <div><label class="lbl">Breite (cm)</label><input type="number" id="mB" placeholder="60" min="1"></div>
     </div>
     <div class="grid2">
-      <div><label class="lbl">📦 Höhe (cm)</label><input type="number" id="mHoe" placeholder="z.B. 40" min="1"></div>
-      <div><label class="lbl">⚖️ Gewicht (kg)</label><input type="number" id="mGew" placeholder="z.B. 25" min="0.1" step="0.1"></div>
+      <div><label class="lbl">Höhe (cm)</label><input type="number" id="mH" placeholder="40" min="1"></div>
+      <div><label class="lbl">Gewicht (kg)</label><input type="number" id="mG" placeholder="25" min="0.1" step="0.1"></div>
     </div>
   </div>
-  <button class="btn" onclick="calculate()">🔍 Jetzt berechnen</button>
-</div>
-<div class="result-card" id="resultCard">
-  <div class="result-header">
-    <div class="rh-sub">✅ Günstigster Anbieter (inkl. aller Zuschläge, netto)</div>
-    <div class="rh-winner" id="winnerName">–</div>
-    <div class="rh-price" id="winnerPrice">–</div>
+  <div class="sped-box">
+    <label class="lbl">🚛 Spedition – Netto-Frachtpreis (€) <span style="font-weight:400;text-transform:none">(optional)</span></label>
+    <input type="number" id="spedPreis" placeholder="z.B. 89.00" min="0" step="0.5">
+    <div class="sped-note">Preis manuell aus Sendify / Cargo International eintragen → App berechnet Kundenpreis mit +10 € Aufschlag + Verpackung automatisch.</div>
   </div>
-  <div class="info-row" id="infoRow"></div>
+  <button class="btn" onclick="calculate()">🔍 Kundenpreis berechnen</button>
+</div>
+
+<div class="result" id="resultCard">
+  <div class="winner-bar">
+    <div class="winner-label">✅ Günstigster Versandweg · Kundenpreis netto</div>
+    <div class="winner-carrier" id="wName">–</div>
+    <div class="winner-price" id="wPrice">–</div>
+    <div class="winner-sub">inkl. Verpackung &amp; Marge · netto zzgl. MwSt.</div>
+  </div>
+  <div class="info-chips" id="infoChips"></div>
   <div id="warnArea"></div>
-  <div id="spedStatusArea"></div>
-  <div class="carrier-list">
-    <h4>Alle Anbieter im Vergleich</h4>
+  <div class="section">
+    <div class="section-title">Alle Optionen im Vergleich</div>
     <div id="carrierList"></div>
   </div>
-  <div class="disc">Alle Preise netto zzgl. MwSt. · GLS Energiezuschlag 21% · DPD 17% · Maut eingerechnet. Saisonzuschläge &amp; Diesel-Floater nicht enthalten. Preise Stand 2025.</div>
-  <button class="reset-btn" onclick="resetForm()">↩ Neue Berechnung</button>
+  <div class="disc">Kundenpreis = Versandkosten netto + Verpackung + Marge (Paket: 20% · Spedition: +10 €) · GLS/DPD Tarife 2025 · inkl. Energiezuschlag &amp; Maut · alle Preise netto zzgl. MwSt.</div>
+  <button class="reset-btn" onclick="reset()">↩ Neue Berechnung</button>
 </div>
+
 <script>
 const GLS_DE=[{m:3,p:3.31},{m:5,p:4.30},{m:10,p:4.65},{m:15,p:4.80},{m:20,p:4.90},{m:25,p:5.13},{m:31.5,p:5.35},{m:40,p:23.75}];
 const GLS_EU={'1A':{cc:['AT','BE','LU','NL'],r:[{m:2,p:6.66},{m:5,p:7.22},{m:10,p:8.31},{m:15,p:9.20},{m:20,p:10.97},{m:25,p:11.16},{m:30,p:14.17},{m:40,p:22.68}]},'1B':{cc:['CH','CZ','DK'],r:[{m:2,p:8.91},{m:5,p:9.61},{m:10,p:10.69},{m:15,p:11.97},{m:20,p:17.13},{m:25,p:17.42},{m:30,p:18.87},{m:40,p:35.12}]},'1C':{cc:['FR','GB'],r:[{m:2,p:11.10},{m:5,p:11.79},{m:10,p:12.62},{m:15,p:14.40},{m:20,p:16.84},{m:25,p:17.13},{m:30,p:19.31},{m:40,p:31.74}]},'1D':{cc:['HU','IT','PL','SK','SI'],r:[{m:2,p:11.52},{m:5,p:12.93},{m:10,p:13.80},{m:15,p:14.86},{m:20,p:17.37},{m:25,p:17.68},{m:30,p:22.11},{m:40,p:33.28}]},'1E':{cc:['ES','IE','PT','SE'],r:[{m:2,p:15.35},{m:5,p:17.39},{m:10,p:18.45},{m:15,p:19.65},{m:20,p:21.79},{m:25,p:22.18},{m:30,p:25.60},{m:40,p:40.23}]},'1F':{cc:['EE','FI','HR','LT','LV','NO'],r:[{m:2,p:15.08},{m:5,p:16.57},{m:10,p:17.67},{m:15,p:18.97},{m:20,p:26.21},{m:25,p:26.68},{m:30,p:28.93},{m:40,p:37.27}]},'1G':{cc:['BG','GR','RO','RS'],r:[{m:2,p:20.52},{m:5,p:24.74},{m:10,p:25.95},{m:15,p:30.17},{m:20,p:32.27},{m:25,p:32.84},{m:30,p:35.53},{m:40,p:45.63}]}};
 const DPD_DE=[{m:3,p:3.87},{m:5,p:4.02},{m:10,p:4.15},{m:15,p:4.28},{m:20,p:4.38},{m:25,p:4.87},{m:31.5,p:5.01}];
 const DPD_EU={'1A':{cc:['AT','BE','LU','NL'],r:[{m:3,p:15.14},{m:5,p:16.70},{m:10,p:18.43},{m:15,p:20.48},{m:20,p:23.06},{m:25,p:26.89},{m:31.5,p:29.45}]},'1B':{cc:['CH','CZ','DK'],r:[{m:3,p:18.18},{m:5,p:19.87},{m:10,p:21.87},{m:15,p:24.33},{m:20,p:27.41},{m:25,p:32.03},{m:31.5,p:35.11}]},'1C':{cc:['FR','GB'],r:[{m:3,p:22.69},{m:5,p:24.84},{m:10,p:27.38},{m:15,p:30.48},{m:20,p:34.39},{m:25,p:40.23},{m:31.5,p:44.12}]},'1D':{cc:['HU','IT','PL','SK','SI'],r:[{m:3,p:26.92},{m:5,p:29.48},{m:10,p:32.52},{m:15,p:36.25},{m:20,p:43.78},{m:25,p:51.27},{m:31.5,p:56.25}]},'1E':{cc:['ES','IE','PT','SE'],r:[{m:3,p:32.86},{m:5,p:36.04},{m:10,p:40.29},{m:15,p:44.34},{m:20,p:50.07},{m:25,p:58.67},{m:31.5,p:64.40}]},'1F':{cc:['EE','FI','HR','LT','LV','NO'],r:[{m:3,p:39.97},{m:5,p:43.83},{m:10,p:48.38},{m:15,p:54.01},{m:20,p:61.02},{m:25,p:71.57},{m:31.5,p:78.58}]},'1G':{cc:['BG','GR','RO','RS'],r:[{m:3,p:69.23},{m:5,p:76.02},{m:10,p:84.03},{m:15,p:93.92},{m:20,p:106.26},{m:25,p:124.76},{m:31.5,p:137.09}]}};
-const KM={DE:250,AT:650,BE:350,LU:320,NL:280,CH:680,CZ:700,DK:500,FR:600,GB:900,HU:900,IT:1100,PL:750,SK:800,SI:950,ES:1600,IE:1400,PT:1800,SE:800,EE:1500,FI:1700,HR:1050,LT:1400,LV:1400,NO:1200,BG:1600,GR:1700,RO:1450,RS:1250};
-function lr(r,kg){for(let x of r)if(kg<=(x.maxKg||x.m))return x.base||x.p;return null;}
-const fmt=v=>v.toFixed(2).replace('.',',')+' €';
 
-function optimiereSendung(pL,pB,pH,pGew,anzahl){
-  const gesamtGewKg=pGew*anzahl;
-  if(anzahl===1){const gurt=pL+2*(pB+pH);if(pL<=200&&gurt<=300&&gesamtGewKg<=40)return[{l:pL,b:pB,h:pH,gew:gesamtGewKg,typ:'paket',anz:1,info:'1 Stück als Paket'}];}
-  const maxPaketGew=31.5;
-  const stueckProPaket=Math.floor(maxPaketGew/pGew);
-  if(stueckProPaket>=1&&pL<=200){
-    const maxStapelH=Math.floor((300-pL)/2/pH);
-    const maxProPaket=Math.min(stueckProPaket,maxStapelH>0?maxStapelH:99);
-    if(maxProPaket>=1){
-      const pakete=Math.ceil(anzahl/maxProPaket);
-      const letztesPaketAnz=anzahl%maxProPaket||maxProPaket;
-      if(pakete<=5){
-        const ergebnis=[];
-        for(let i=0;i<pakete;i++){
-          const anz=(i===pakete-1)?letztesPaketAnz:maxProPaket;
-          const h=pH*anz;const gew=pGew*anz;const gurt=pL+2*(pB+h);
-          if(gurt<=300&&gew<=40)ergebnis.push({l:pL,b:pB,h:h,gew:gew,typ:'paket',anz:anz,info:`${anz} Stück gestapelt`});
-        }
-        if(ergebnis.length===pakete)return ergebnis;
+const fmt=v=>v.toFixed(2).replace('.',',')+' €';
+function lr(r,kg){for(let x of r)if(kg<=x.m)return x.p;return null;}
+function gs(id){return parseFloat(document.getElementById(id).value)||0;}
+
+function kpPaket(netto){
+  const marge=gs('setPaketMarge')/100;
+  const verp=gs('setVerpPaket');
+  const basis=netto+verp;
+  return{versand:netto,verp,marge:parseFloat((basis*marge).toFixed(2)),gesamt:parseFloat((basis*(1+marge)).toFixed(2))};
+}
+function kpPalette(netto){
+  const marge=gs('setPaketMarge')/100;
+  const verp=gs('setVerpPalette');
+  const basis=netto+verp;
+  return{versand:netto,verp,marge:parseFloat((basis*marge).toFixed(2)),gesamt:parseFloat((basis*(1+marge)).toFixed(2))};
+}
+function kpSped(netto){
+  const aufschlag=gs('setSpedAufschlag');
+  const verp=gs('setVerpPalette');
+  return{versand:netto,verp,aufschlag,gesamt:parseFloat((netto+verp+aufschlag).toFixed(2))};
+}
+
+function optimiere(pL,pB,pH,pGew,anzahl){
+  const gGew=pGew*anzahl;
+  if(anzahl===1){const gurt=pL+2*(pB+pH);if(pL<=200&&gurt<=300&&gGew<=40)return[{l:pL,b:pB,h:pH,gew:gGew,typ:'paket',info:'1 Stück'}];}
+  const spp=Math.floor(31.5/pGew);
+  if(spp>=1&&pL<=200){
+    const msh=Math.floor((300-pL)/2/pH);
+    const mpr=Math.min(spp,msh>0?msh:99);
+    if(mpr>=1){
+      const pk=Math.ceil(anzahl/mpr);const lz=anzahl%mpr||mpr;
+      if(pk<=6){
+        const res=[];
+        for(let i=0;i<pk;i++){const a=(i===pk-1)?lz:mpr;const h=pH*a;const gew=pGew*a;const gurt=pL+2*(pB+h);if(gurt<=300&&gew<=40)res.push({l:pL,b:pB,h,gew,typ:'paket',info:`${a} Stück gestapelt`});}
+        if(res.length===pk)return res;
       }
     }
   }
-  const zielBreite=80,maxHoehe=200;
-  let nebeneinander=Math.floor(zielBreite/pB);if(nebeneinander<1)nebeneinander=1;
-  const palBrei=nebeneinander*pB;
-  const maxLagen=Math.floor(maxHoehe/pH);
-  const stueckProLage=nebeneinander;
-  const benoetigteLagen=Math.ceil(anzahl/stueckProLage);
-  const lagen=Math.min(benoetigteLagen,maxLagen);
-  const stueckProPalette=stueckProLage*lagen;
-  const anzPaletten=Math.ceil(anzahl/stueckProPalette);
-  const ergebnis=[];let restAnzahl=anzahl;
-  for(let i=0;i<anzPaletten;i++){
-    const dieseAnz=Math.min(restAnzahl,stueckProPalette);
-    const dieseLagen=Math.ceil(dieseAnz/stueckProLage);
-    ergebnis.push({l:pL,b:palBrei,h:dieseLagen*pH,gew:pGew*dieseAnz,typ:'palette',anz:dieseAnz,info:`${dieseAnz} Stück · ${nebeneinander} nebeneinander · ${dieseLagen} Lage(n)`});
-    restAnzahl-=dieseAnz;
+  let nb=Math.floor(80/pB);if(nb<1)nb=1;
+  const ml=Math.floor(200/pH);
+  const sp=nb*Math.min(Math.ceil(anzahl/nb),ml);
+  const ap=Math.ceil(anzahl/sp);
+  const res=[];let rest=anzahl;
+  for(let i=0;i<ap;i++){
+    const da=Math.min(rest,sp);const lagen=Math.ceil(da/nb);
+    res.push({l:pL,b:nb*pB,h:lagen*pH,gew:pGew*da,typ:'palette',info:`${da} Stück · ${nb} nebeneinander · ${lagen} Lage(n)`});
+    rest-=da;
   }
-  return ergebnis;
+  return res;
 }
 
-function berechneVorschau(){
-  const pL=parseFloat(document.getElementById('pLen').value);
-  const pB=parseFloat(document.getElementById('pBre').value);
-  const pH=parseFloat(document.getElementById('pHoe').value);
-  const pGew=parseFloat(document.getElementById('pGew').value);
-  const anz=parseInt(document.getElementById('pAnz').value);
-  if(!pL||!pB||!pH||!pGew||!anz){document.getElementById('sendungBox').style.display='none';return;}
-  const sendungen=optimiereSendung(pL,pB,pH,pGew,anz);
-  const gesamtGew=pGew*anz;
-  let html=`Gesamtgewicht: <b>${gesamtGew} kg</b> · ${sendungen.length} Sendung(en)<br><br>`;
-  sendungen.forEach((s,i)=>{
-    const typTag=s.typ==='paket'?'<span class="tag tag-paket">📦 Paket</span>':'<span class="tag tag-palette">🚛 Palette</span>';
-    const gurt=s.l+2*(s.b+s.h);
-    html+=`<b>Sendung ${i+1}:</b>${typTag}<br>${s.info}<br>Maße: <b>${s.l}×${s.b}×${s.h} cm</b> · Gewicht: <b>${s.gew.toFixed(1)} kg</b>`;
-    if(s.typ==='paket')html+=` · Gurtmaß: ${Math.round(gurt)} cm`;
-    if(i<sendungen.length-1)html+='<hr style="border:none;border-top:1px solid #e0ebd8;margin:8px 0">';
-  });
-  document.getElementById('sendungDetail').innerHTML=html;
-  document.getElementById('sendungBox').style.display='block';
-}
-
-function setMode(mode){
-  if(mode==='produkt'){document.getElementById('produktModus').style.display='block';document.getElementById('manualModus').style.display='none';document.getElementById('modeProdukt').classList.add('active');document.getElementById('modeManual').classList.remove('active');}
-  else{document.getElementById('produktModus').style.display='none';document.getElementById('manualModus').style.display='block';document.getElementById('modeProdukt').classList.remove('active');document.getElementById('modeManual').classList.add('active');}
-}
-function checkCountry(){const cc=document.getElementById('country').value;document.getElementById('spedHint').style.display=(cc&&cc!=='DE')?'block':'none';}
-function calcGLS(l,b,h,kg,cc,b2c){const gurt=l+2*(b+h),v5=(l*b*h)/5000,v6=(l*b*h)/6000,vl=(l*b*h)/1000,items=[];if(cc==='DE'){if(l>200||b>200||h>200)return{possible:false,note:'Seite >200 cm'};if(gurt>300)return{possible:false,note:'Gurtmaß >300 cm'};const rg=Math.max(kg,v5);if(rg>40)return{possible:false,note:'Rechengewicht >40 kg'};const base=lr(GLS_DE,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`Basispreis (${rg.toFixed(1)} kg)`,v:base});if(l>120)items.push({l:'Überlänge >120 cm',v:2.50});if(vl>150)items.push({l:'Großpaket >150 L',v:2.50});if(b2c)items.push({l:'Privatkundenlieferung',v:0.35});items.push({l:'Maut',v:0.37});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 21%',v:parseFloat((s*0.21).toFixed(2))});}else{let zone=null,zk=null;for(let[k,z]of Object.entries(GLS_EU))if(z.cc.includes(cc)){zone=z;zk=k;break;}if(!zone)return{possible:false,note:'Land nicht im Tarif'};const rg=Math.max(kg,v6);if(rg>40||l>200||gurt>300)return{possible:false,note:'Maße/Gewicht überschritten'};const base=lr(zone.r,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`EBP Zone ${zk} (${rg.toFixed(1)} kg)`,v:base});if(l>120)items.push({l:'Überlänge >120 cm',v:2.50});if(vl>150)items.push({l:'Großpaket >150 L',v:2.50});const s1=items.reduce((a,i)=>a+i.v,0);items.push({l:'Maut intl. 5%',v:parseFloat((s1*0.05).toFixed(2))});const s2=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 21%',v:parseFloat((s2*0.21).toFixed(2))});}return{possible:true,price:items.reduce((a,i)=>a+i.v,0),items,note:'GLS via MRPacket'};}
-function calcDPD(l,b,h,kg,cc){const gurt=l+2*(b+h),v5=(l*b*h)/5000,vl=(l*b*h)/1000,items=[];if(cc==='DE'){if(l>175||gurt>300)return{possible:false,note:'Überlänge/Übergurtmaß'};const rg=Math.max(kg,v5);if(rg>40)return{possible:false,note:'Rechengewicht >40 kg'};if(rg>31.5){items.push({l:'Basispreis 31,5 kg',v:5.01});items.push({l:'Übergewicht-Zuschlag',v:54.00});}else{const base=lr(DPD_DE,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`Basispreis (${rg.toFixed(1)} kg)`,v:base});}if(l>120)items.push({l:'NC-Zuschlag >120 cm',v:7.50});else if(b>60||h>60)items.push({l:'NC-Zuschlag Seite >60 cm',v:7.50});else if(vl>150)items.push({l:'NC-Zuschlag >150 Liter',v:7.50});items.push({l:'Sicherheitszuschlag',v:0.17});items.push({l:'Maut',v:0.38});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 17%',v:parseFloat((s*0.17).toFixed(2))});}else{let zone=null,zk=null;for(let[k,z]of Object.entries(DPD_EU))if(z.cc.includes(cc)){zone=z;zk=k;break;}if(!zone)return{possible:false,note:'Land nicht im Tarif'};const rg=Math.max(kg,v5);if(rg>31.5||l>175||gurt>300)return{possible:false,note:'Maße/Gewicht überschritten'};const base=lr(zone.r,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`DPD Classic EU Zone ${zk} (${rg.toFixed(1)} kg)`,v:base});if(l>120)items.push({l:'NC-Zuschlag >120 cm',v:7.50});else if(b>60||h>60)items.push({l:'NC-Zuschlag Seite >60 cm',v:7.50});else if(vl>150)items.push({l:'NC-Zuschlag >150 Liter',v:7.50});items.push({l:'Sicherheitszuschlag',v:0.17});items.push({l:'Maut',v:0.38});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 17%',v:parseFloat((s*0.17).toFixed(2))});}return{possible:true,price:items.reduce((a,i)=>a+i.v,0),items,note:'DPD Classic via MRPacket'};}
-function calcEigen(cc,kmOverride){const km=kmOverride||(KM[cc]||null);if(!km)return{possible:false,note:'Entfernung unbekannt'};return{possible:true,price:km*2*1.20,items:[{l:`${km} km × 2 × 1,20 €${kmOverride?' (PLZ-basiert)':''}`,v:km*2*1.20}],note:'Eigenfahrt ab Finnentrop'};}
-
-// ─── Sendify Live-Abfrage ────────────────────────────────────────────────────
-async function fetchSendify(plz, l, b, h, kg) {
-  try {
-    const resp = await fetch('/.netlify/functions/sendify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plz, l, b, h, kg })
-    });
-    const json = await resp.json();
-
-    if (json.price != null) {
-      const p = parseFloat(json.price);
-      const carrierName = json.carrier || 'Sendify';
-      const note = json.offers && json.offers.length > 1
-        ? `Günstigster von ${json.offers.length} Angeboten: ${carrierName}`
-        : `Sendify · ${carrierName}`;
-      return {
-        id: 'sendify',
-        name: 'Sendify (Spedition)',
-        icon: '🔵',
-        km: null,
-        result: {
-          possible: true,
-          price: p,
-          items: [{ l: note, v: p }],
-          note: 'Sendify Live-Preis via API'
-        }
-      };
-    } else {
-      return {
-        id: 'sendify',
-        name: 'Sendify (Spedition)',
-        icon: '🔵',
-        km: null,
-        result: {
-          possible: false,
-          note: json.error || 'Kein Angebot verfügbar'
-        }
-      };
-    }
-  } catch (e) {
-    return {
-      id: 'sendify',
-      name: 'Sendify (Spedition)',
-      icon: '🔵',
-      km: null,
-      result: { possible: false, note: `Fehler: ${e.message}` }
-    };
+function calcGLS(l,b,h,kg,cc,b2c){
+  const gurt=l+2*(b+h),v5=(l*b*h)/5000,v6=(l*b*h)/6000,vl=(l*b*h)/1000,items=[];
+  if(cc==='DE'){
+    if(l>200||gurt>300)return{ok:false,note:'Maße überschritten'};
+    const rg=Math.max(kg,v5);if(rg>40)return{ok:false,note:'Rechengewicht >40 kg'};
+    const base=lr(GLS_DE,rg);if(!base)return{ok:false,note:'Außerhalb Tarif'};
+    items.push({l:`Basispreis (${rg.toFixed(1)} kg)`,v:base});
+    if(l>120)items.push({l:'Überlänge >120 cm',v:2.50});
+    if(vl>150)items.push({l:'Großpaket >150 L',v:2.50});
+    if(b2c)items.push({l:'Privatkundenlieferung',v:0.35});
+    items.push({l:'Maut',v:0.37});
+    const s=items.reduce((a,i)=>a+i.v,0);
+    items.push({l:'Energiezuschlag 21%',v:parseFloat((s*0.21).toFixed(2))});
+  } else {
+    let zone=null,zk=null;
+    for(let[k,z]of Object.entries(GLS_EU))if(z.cc.includes(cc)){zone=z;zk=k;break;}
+    if(!zone)return{ok:false,note:'Land nicht im Tarif'};
+    const rg=Math.max(kg,v6);if(rg>40||l>200||gurt>300)return{ok:false,note:'Maße überschritten'};
+    const base=lr(zone.r,rg);if(!base)return{ok:false,note:'Außerhalb Tarif'};
+    items.push({l:`Zone ${zk} (${rg.toFixed(1)} kg)`,v:base});
+    if(l>120)items.push({l:'Überlänge >120 cm',v:2.50});
+    if(vl>150)items.push({l:'Großpaket >150 L',v:2.50});
+    const s1=items.reduce((a,i)=>a+i.v,0);
+    items.push({l:'Maut intl. 5%',v:parseFloat((s1*0.05).toFixed(2))});
+    const s2=items.reduce((a,i)=>a+i.v,0);
+    items.push({l:'Energiezuschlag 21%',v:parseFloat((s2*0.21).toFixed(2))});
   }
+  return{ok:true,netto:items.reduce((a,i)=>a+i.v,0),items};
 }
-// ────────────────────────────────────────────────────────────────────────────
 
-function renderCarriers(carriers){
-  const possible=carriers.filter(c=>c.result.possible&&!c.result.loading).sort((a,b)=>a.result.price-b.result.price);
-  const best=possible[0];
-  const stillLoading=carriers.some(c=>c.result.loading);
-  document.getElementById('winnerName').textContent=best?`${best.icon} ${best.name}`:stillLoading?'⏳ Wird berechnet…':'⚠️ Kein Anbieter';
-  document.getElementById('winnerPrice').textContent=best?fmt(best.result.price)+' netto':'–';
-  let html='';
-  carriers.forEach(c=>{
-    const isLoading=c.result.loading;
-    const isBest=best&&c.id===best.id;
-    const cls=isLoading?'loading':!c.result.possible?'na':isBest?'best':'ok';
-    const bcls=isLoading?'loading':!c.result.possible?'na':isBest?'best':'ok';
-    const btxt=isLoading?'⏳ Wird abgefragt…':!c.result.possible?'N/A':isBest?'✓ Günstigste':'Verfügbar';
-    let sur='';
-    if(!isLoading&&c.result.possible&&c.result.items)sur='<div class="csur">'+c.result.items.map(i=>`<div class="csur-row"><span>${i.l}</span><span>${fmt(i.v)}</span></div>`).join('')+'</div>';
-    const priceHtml=isLoading?'<div class="cprice loading">…</div>':c.result.possible?`<div class="cprice">${fmt(c.result.price)}</div><div class="cprice-sub">netto</div>`:'<div class="cprice na">—</div>';
-    html+=`<div class="crow ${cls}"><div style="flex:1"><div class="cname">${c.icon} ${c.name} <span class="cbadge ${bcls}">${btxt}</span></div><div class="cnote">${c.result.note||''}</div>${sur}</div><div style="text-align:right;min-width:70px;padding-left:8px">${priceHtml}</div></div>`;
+function calcDPD(l,b,h,kg,cc){
+  const gurt=l+2*(b+h),v5=(l*b*h)/5000,vl=(l*b*h)/1000,items=[];
+  if(cc==='DE'){
+    if(l>175||gurt>300)return{ok:false,note:'Maße überschritten'};
+    const rg=Math.max(kg,v5);if(rg>40)return{ok:false,note:'Rechengewicht >40 kg'};
+    if(rg>31.5){items.push({l:'Basispreis 31,5 kg',v:5.01});items.push({l:'Übergewicht-Zuschlag',v:54.00});}
+    else{const base=lr(DPD_DE,rg);if(!base)return{ok:false,note:'Außerhalb Tarif'};items.push({l:`Basispreis (${rg.toFixed(1)} kg)`,v:base});}
+    if(l>120)items.push({l:'NC-Zuschlag >120 cm',v:7.50});
+    else if(b>60||h>60)items.push({l:'NC-Zuschlag Seite >60 cm',v:7.50});
+    else if(vl>150)items.push({l:'NC-Zuschlag >150 L',v:7.50});
+    items.push({l:'Sicherheitszuschlag',v:0.17});
+    items.push({l:'Maut',v:0.38});
+    const s=items.reduce((a,i)=>a+i.v,0);
+    items.push({l:'Energiezuschlag 17%',v:parseFloat((s*0.17).toFixed(2))});
+  } else {
+    let zone=null,zk=null;
+    for(let[k,z]of Object.entries(DPD_EU))if(z.cc.includes(cc)){zone=z;zk=k;break;}
+    if(!zone)return{ok:false,note:'Land nicht im Tarif'};
+    const rg=Math.max(kg,v5);if(rg>31.5||l>175||gurt>300)return{ok:false,note:'Maße überschritten'};
+    const base=lr(zone.r,rg);if(!base)return{ok:false,note:'Außerhalb Tarif'};
+    items.push({l:`Zone ${zk} (${rg.toFixed(1)} kg)`,v:base});
+    if(l>120)items.push({l:'NC-Zuschlag >120 cm',v:7.50});
+    else if(b>60||h>60)items.push({l:'NC-Zuschlag Seite >60',v:7.50});
+    else if(vl>150)items.push({l:'NC-Zuschlag >150 L',v:7.50});
+    items.push({l:'Sicherheitszuschlag',v:0.17});
+    items.push({l:'Maut',v:0.38});
+    const s=items.reduce((a,i)=>a+i.v,0);
+    items.push({l:'Energiezuschlag 17%',v:parseFloat((s*0.17).toFixed(2))});
+  }
+  return{ok:true,netto:items.reduce((a,i)=>a+i.v,0),items};
+}
+
+function setMode(m){
+  const isP=m==='produkt';
+  document.getElementById('modProdukt').style.display=isP?'block':'none';
+  document.getElementById('modManual').style.display=isP?'none':'block';
+  document.getElementById('modeA').classList.toggle('active',isP);
+  document.getElementById('modeB').classList.toggle('active',!isP);
+}
+function toggleSettings(){
+  const p=document.getElementById('settingsPanel');
+  p.style.display=p.style.display==='none'||p.style.display===''?'block':'none';
+}
+function vorschau(){
+  const pL=parseFloat(document.getElementById('pL').value);
+  const pB=parseFloat(document.getElementById('pB').value);
+  const pH=parseFloat(document.getElementById('pH').value);
+  const pG=parseFloat(document.getElementById('pG').value);
+  const pA=parseInt(document.getElementById('pA').value);
+  const box=document.getElementById('prevBox');
+  if(!pL||!pB||!pH||!pG||!pA){box.style.display='none';return;}
+  const s=optimiere(pL,pB,pH,pG,pA);
+  const gGew=pG*pA;
+  let html=`Gesamt: <b>${gGew.toFixed(1)} kg</b> · <b>${s.length}</b> Sendung(en)<br>`;
+  s.forEach((x,i)=>{
+    const tag=x.typ==='paket'?'<span class="tag tag-p">📦 Paket</span>':'<span class="tag tag-pal">🚛 Palette</span>';
+    html+=`<br><b>S${i+1}:</b>${tag} ${x.info} · <b>${x.l}×${x.b}×${x.h} cm</b> · <b>${x.gew.toFixed(1)} kg</b>`;
   });
-  document.getElementById('carrierList').innerHTML=html;
+  box.innerHTML=html;box.style.display='block';
 }
 
-async function calculate(){
+function renderRow(c){
+  const isBest=c.best;
+  const cls=!c.ok?'na':isBest?'best':'ok';
+  const badge=!c.ok?'<span class="badge na">N/A</span>':isBest?'<span class="badge best">✓ Günstigste</span>':'<span class="badge ok">Verfügbar</span>';
+  let breakdown='';
+  if(c.ok&&c.kp){
+    const kp=c.kp;
+    breakdown='<div class="c-breakdown">';
+    if(c.items)c.items.forEach(x=>{breakdown+=`<div class="c-row"><span>${x.l}</span><span>${fmt(x.v)}</span></div>`;});
+    breakdown+=`<div class="c-row subtotal"><span>Versandkosten netto</span><span>${fmt(kp.versand)}</span></div>`;
+    breakdown+=`<div class="c-row"><span>Verpackung</span><span>+ ${fmt(kp.verp)}</span></div>`;
+    if(kp.marge!=null)breakdown+=`<div class="c-row"><span>Marge (${gs('setPaketMarge')}%)</span><span>+ ${fmt(kp.marge)}</span></div>`;
+    if(kp.aufschlag!=null)breakdown+=`<div class="c-row"><span>Aufschlag Spedition</span><span>+ ${fmt(kp.aufschlag)}</span></div>`;
+    breakdown+=`<div class="c-row customer"><span>💶 Kundenpreis netto</span><span>${fmt(kp.gesamt)}</span></div>`;
+    breakdown+='</div>';
+  }
+  const priceHtml=c.ok?`<div class="price-customer">${fmt(c.kp.gesamt)}</div><div class="price-sub">Kundenpreis netto</div>`:'<div class="price-na">—</div>';
+  return `<div class="crow ${cls}"><div class="c-left"><div class="c-name">${c.icon} ${c.name} ${badge}</div><div class="c-note">${c.note||''}</div>${breakdown}</div><div class="c-price">${priceHtml}</div></div>`;
+}
+
+function calculate(){
   const cc=document.getElementById('country').value;
-  const plz=document.getElementById('plz').value.trim();
-  const b2c=document.getElementById('custType').value==='b2c';
   if(!cc)return alert('Bitte ein Land auswählen.');
-  const isProdukt=document.getElementById('produktModus').style.display!=='none';
+  const b2c=document.getElementById('custType').value==='b2c';
+  const isP=document.getElementById('modProdukt').style.display!=='none';
   let sendungen=[];
-  if(isProdukt){
-    const pL=parseFloat(document.getElementById('pLen').value);
-    const pB=parseFloat(document.getElementById('pBre').value);
-    const pH=parseFloat(document.getElementById('pHoe').value);
-    const pGew=parseFloat(document.getElementById('pGew').value);
-    const anz=parseInt(document.getElementById('pAnz').value);
-    if(!pL||!pB||!pH||!pGew||!anz)return alert('Bitte alle Produktfelder ausfüllen.');
-    sendungen=optimiereSendung(pL,pB,pH,pGew,anz);
-  }else{
-    const l=parseFloat(document.getElementById('mLen').value);
-    const b=parseFloat(document.getElementById('mBre').value);
-    const h=parseFloat(document.getElementById('mHoe').value);
-    const kg=parseFloat(document.getElementById('mGew').value);
-    if(!l||!b||!h||!kg)return alert('Bitte alle Maße ausfüllen.');
-    sendungen=[{l,b,h,gew:kg,typ:'manuell',anz:1,info:'Manuelle Eingabe'}];
+  if(isP){
+    const pL=parseFloat(document.getElementById('pL').value);
+    const pB=parseFloat(document.getElementById('pB').value);
+    const pH=parseFloat(document.getElementById('pH').value);
+    const pG=parseFloat(document.getElementById('pG').value);
+    const pA=parseInt(document.getElementById('pA').value);
+    if(!pL||!pB||!pH||!pG||!pA)return alert('Bitte alle Produktfelder ausfüllen.');
+    sendungen=optimiere(pL,pB,pH,pG,pA);
+  } else {
+    const l=parseFloat(document.getElementById('mL').value);
+    const b=parseFloat(document.getElementById('mB').value);
+    const h=parseFloat(document.getElementById('mH').value);
+    const g=parseFloat(document.getElementById('mG').value);
+    if(!l||!b||!h||!g)return alert('Bitte alle Maße ausfüllen.');
+    sendungen=[{l,b,h,gew:g,typ:'manuell',info:'Manuelle Eingabe'}];
   }
 
   const gesamtGew=sendungen.reduce((a,s)=>a+s.gew,0);
   const s0=sendungen[0];
-  const nurSpedition=gesamtGew>=40;
-  let totalGLS=0,totalDPD=0,glsPossible=!nurSpedition,dpdPossible=!nurSpedition,glsItems=[],dpdItems=[],warns='';
+  const hatPalette=sendungen.some(s=>s.typ==='palette');
+  const nurSped=gesamtGew>=40||hatPalette;
+  const spedNetto=parseFloat(document.getElementById('spedPreis').value)||null;
 
-  if(nurSpedition){
-    warns+=`<div class="warn">📦 Gesamtgewicht ${gesamtGew.toFixed(1)} kg → ab 40 kg nur Spedition &amp; Eigenfahrt</div>`;
-  }else{
+  let carriers=[];
+  let warns='';
+
+  if(nurSped){
+    warns+=`<div class="warn-box">📦 Gesamtgewicht ${gesamtGew.toFixed(1)} kg / Palette erkannt → GLS &amp; DPD nicht möglich</div>`;
+  } else {
+    let tGLS=0,tDPD=0,glsOk=true,dpdOk=true,glsItems=[],dpdItems=[],glsNote='',dpdNote='';
     sendungen.forEach((s,i)=>{
       const gls=calcGLS(s.l,s.b,s.h,s.gew,cc,b2c);
       const dpd=calcDPD(s.l,s.b,s.h,s.gew,cc);
+      if(gls.ok){tGLS+=gls.netto;glsItems.push(...gls.items.map(x=>({l:`[S${i+1}] ${x.l}`,v:x.v})));}
+      else{glsOk=false;glsNote=gls.note;}
+      if(dpd.ok){tDPD+=dpd.netto;dpdItems.push(...dpd.items.map(x=>({l:`[S${i+1}] ${x.l}`,v:x.v})));}
+      else{dpdOk=false;dpdNote=dpd.note;}
       const vl=(s.l*s.b*s.h)/1000;
-      if(gls.possible){totalGLS+=gls.price;glsItems.push(...gls.items.map(x=>({l:`[S${i+1}] ${x.l}`,v:x.v})));}else glsPossible=false;
-      if(dpd.possible){totalDPD+=dpd.price;dpdItems.push(...dpd.items.map(x=>({l:`[S${i+1}] ${x.l}`,v:x.v})));}else dpdPossible=false;
-      if(s.l>120)warns+=`<div class="warn">⚠️ Sendung ${i+1}: Länge ${s.l} cm → Überlänge-Zuschläge</div>`;
-      if(vl>150)warns+=`<div class="warn">⚠️ Sendung ${i+1}: Volumen ${Math.round(vl)} L → Großpaket-Zuschlag</div>`;
+      if(s.l>120)warns+=`<div class="warn-box">⚠️ S${i+1}: Länge ${s.l} cm → Überlänge-Zuschlag aktiv</div>`;
+      if(vl>150)warns+=`<div class="warn-box">⚠️ S${i+1}: Volumen ${Math.round(vl)} L → Großpaket-Zuschlag</div>`;
     });
+    carriers.push(glsOk
+      ?{id:'gls',name:'GLS via MRPacket',icon:'🟡',ok:true,note:`${sendungen.length} Paket(e)`,items:glsItems,kp:kpPaket(tGLS)}
+      :{id:'gls',name:'GLS via MRPacket',icon:'🟡',ok:false,note:glsNote||'Nicht möglich'});
+    carriers.push(dpdOk
+      ?{id:'dpd',name:'DPD Classic via MRPacket',icon:'🔴',ok:true,note:`${sendungen.length} Paket(e)`,items:dpdItems,kp:kpPaket(tDPD)}
+      :{id:'dpd',name:'DPD Classic via MRPacket',icon:'🔴',ok:false,note:dpdNote||'Nicht möglich'});
   }
 
-  const eigen=calcEigen(cc,null);
-  document.getElementById('infoRow').innerHTML=[
-    ['Sendungen',sendungen.length+'x'],
-    ['Ges.gewicht',gesamtGew.toFixed(1)+' kg'],
-    ['Typ',nurSpedition?'🚛 Spedition':s0.typ==='paket'?'📦 Paket':'🚛 Palette'],
-    ['Maße S1',`${s0.l}×${s0.b}×${s0.h}`]
+  if(spedNetto!=null&&spedNetto>0){
+    carriers.push({id:'sped',name:'Spedition (manuell)',icon:'🚛',ok:true,note:'Sendify / Cargo International',items:[{l:'Netto-Frachtpreis (manuell)',v:spedNetto}],kp:kpSped(spedNetto)});
+  } else {
+    carriers.push({id:'sped',name:'Spedition (manuell)',icon:'🚛',ok:false,note:'Kein Preis eingetragen'});
+  }
+
+  const possible=carriers.filter(c=>c.ok).sort((a,b)=>a.kp.gesamt-b.kp.gesamt);
+  if(possible.length>0)possible[0].best=true;
+  const best=possible[0];
+
+  document.getElementById('wName').textContent=best?`${best.icon} ${best.name}`:'⚠️ Kein Anbieter verfügbar';
+  document.getElementById('wPrice').textContent=best?fmt(best.kp.gesamt):'–';
+  document.getElementById('infoChips').innerHTML=[
+    ['Sendungen',sendungen.length+'×'],
+    ['Gewicht',gesamtGew.toFixed(1)+' kg'],
+    ['Typ',nurSped?'🚛 Spedition':s0.typ==='paket'?'📦 Paket':'🚛 Palette'],
+    ['Land',cc]
   ].map(([k,v])=>`<div class="chip">${k}<span>${v}</span></div>`).join('');
   document.getElementById('warnArea').innerHTML=warns;
-  document.getElementById('spedStatusArea').innerHTML='';
-
-  // Initiale Carrier-Liste (ohne Sendify – wird nachgeladen)
-  let carriers=[];
-  if(!nurSpedition){
-    carriers.push({id:'gls',name:'GLS via MRPacket',icon:'🟡',result:glsPossible?{possible:true,price:totalGLS,items:glsItems,note:`GLS · ${sendungen.length} Paket(e)`}:{possible:false,note:'Nicht möglich'}});
-    carriers.push({id:'dpd',name:'DPD via MRPacket',icon:'🔴',result:dpdPossible?{possible:true,price:totalDPD,items:dpdItems,note:`DPD · ${sendungen.length} Paket(e)`}:{possible:false,note:'Nicht möglich'}});
-  }
-  carriers.push({id:'eigen',name:'Eigenfahrt',icon:'🚐',result:eigen});
-
-  // Sendify als "loading" Platzhalter einfügen (nur DE mit PLZ)
-  if(cc==='DE'&&plz.length>=4){
-    carriers.push({id:'sendify',name:'Sendify (Spedition)',icon:'🔵',result:{possible:false,loading:true,note:'Wird abgefragt…'}});
-  }
-
+  document.getElementById('carrierList').innerHTML=carriers.map(renderRow).join('');
   const rc=document.getElementById('resultCard');
   rc.style.display='block';
-  renderCarriers(carriers);
   rc.scrollIntoView({behavior:'smooth',block:'start'});
-
-  // Sendify asynchron nachladen
-  if(cc==='DE'&&plz.length>=4){
-    const sendifyResult=await fetchSendify(plz,s0.l,s0.b,s0.h,gesamtGew);
-    const idx=carriers.findIndex(c=>c.id==='sendify');
-    if(idx>=0)carriers[idx]=sendifyResult;
-    else carriers.push(sendifyResult);
-    renderCarriers(carriers);
-  }
 }
 
-function resetForm(){
+function reset(){
   document.getElementById('resultCard').style.display='none';
   document.getElementById('country').value='';
   document.getElementById('custType').value='b2b';
   document.getElementById('plz').value='';
-  ['pLen','pBre','pHoe','pGew','pAnz','mLen','mBre','mHoe','mGew'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('sendungBox').style.display='none';
-  document.getElementById('spedHint').style.display='none';
+  document.getElementById('spedPreis').value='';
+  ['pL','pB','pH','pG','pA','mL','mB','mH','mG'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('prevBox').style.display='none';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
