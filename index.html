@@ -50,16 +50,19 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .crow.best{background:#edf7ed;border-color:#2d6a2d}
 .crow.ok{background:#fafcf8;border-color:#e0ebd8}
 .crow.na{background:#fafafa;border-color:#efefef;opacity:.55}
+.crow.loading{background:#f0f7ff;border-color:#90caf9;opacity:.8}
 .cname{font-size:13px;font-weight:600;color:#222;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .cbadge{font-size:9px;font-weight:700;padding:2px 5px;border-radius:14px}
 .cbadge.best{background:#2d6a2d;color:#fff}
 .cbadge.ok{background:#e0ebd8;color:#2d6a2d}
 .cbadge.na{background:#efefef;color:#aaa}
+.cbadge.loading{background:#bbdefb;color:#1565c0}
 .cnote{font-size:9px;color:#9ab89a;margin-top:2px}
 .csur{font-size:9px;color:#7a9a7a;margin-top:3px;line-height:1.6}
 .csur-row{display:flex;justify-content:space-between;gap:8px}
 .cprice{font-size:14px;font-weight:700;color:#2d6a2d;text-align:right;white-space:nowrap}
 .cprice.na{color:#ccc}
+.cprice.loading{color:#90caf9}
 .cprice-sub{font-size:9px;color:#9ab89a;text-align:right}
 .disc{font-size:9px;color:#b0c8b0;padding:0 16px 12px;line-height:1.5;margin-top:4px}
 .reset-btn{width:calc(100% - 32px);margin:0 16px 14px;padding:10px;background:#f4f7f0;color:#2d6a2d;border:2px solid #e0ebd8;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
@@ -77,7 +80,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <div class="logo-sub">Versandkosten-Rechner · Intern</div>
   </div>
 </div>
-<div class="subtitle">Lager Finnentrop · GLS · DPD · Spedition · Eigenfahrt</div>
+<div class="subtitle">Lager Finnentrop · GLS · DPD · Sendify · Eigenfahrt</div>
 <div class="card">
   <div class="step-label"><div class="step-badge">1</div> Land &amp; Empfänger</div>
   <select id="country" onchange="checkCountry()">
@@ -97,7 +100,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <select id="custType"><option value="b2b">Gewerblich (B2B)</option><option value="b2c">Privatkunde (B2C)</option></select>
     </div>
   </div>
-  <div id="spedHint" style="display:none;font-size:10px;color:#e07a00;margin-top:6px;text-align:center">ℹ️ Speditionsabfrage nur für Deutschland verfügbar.</div>
+  <div id="spedHint" style="display:none;font-size:10px;color:#e07a00;margin-top:6px;text-align:center">ℹ️ Sendify-Abfrage nur für Deutschland verfügbar.</div>
 </div>
 <div class="card">
   <div class="step-label"><div class="step-badge">2</div> Produkt &amp; Menge</div>
@@ -229,44 +232,76 @@ function calcGLS(l,b,h,kg,cc,b2c){const gurt=l+2*(b+h),v5=(l*b*h)/5000,v6=(l*b*h
 function calcDPD(l,b,h,kg,cc){const gurt=l+2*(b+h),v5=(l*b*h)/5000,vl=(l*b*h)/1000,items=[];if(cc==='DE'){if(l>175||gurt>300)return{possible:false,note:'Überlänge/Übergurtmaß'};const rg=Math.max(kg,v5);if(rg>40)return{possible:false,note:'Rechengewicht >40 kg'};if(rg>31.5){items.push({l:'Basispreis 31,5 kg',v:5.01});items.push({l:'Übergewicht-Zuschlag',v:54.00});}else{const base=lr(DPD_DE,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`Basispreis (${rg.toFixed(1)} kg)`,v:base});}if(l>120)items.push({l:'NC-Zuschlag >120 cm',v:7.50});else if(b>60||h>60)items.push({l:'NC-Zuschlag Seite >60 cm',v:7.50});else if(vl>150)items.push({l:'NC-Zuschlag >150 Liter',v:7.50});items.push({l:'Sicherheitszuschlag',v:0.17});items.push({l:'Maut',v:0.38});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 17%',v:parseFloat((s*0.17).toFixed(2))});}else{let zone=null,zk=null;for(let[k,z]of Object.entries(DPD_EU))if(z.cc.includes(cc)){zone=z;zk=k;break;}if(!zone)return{possible:false,note:'Land nicht im Tarif'};const rg=Math.max(kg,v5);if(rg>31.5||l>175||gurt>300)return{possible:false,note:'Maße/Gewicht überschritten'};const base=lr(zone.r,rg);if(!base)return{possible:false,note:'Außerhalb Tarif'};items.push({l:`DPD Classic EU Zone ${zk} (${rg.toFixed(1)} kg)`,v:base});if(l>120)items.push({l:'NC-Zuschlag >120 cm',v:7.50});else if(b>60||h>60)items.push({l:'NC-Zuschlag Seite >60 cm',v:7.50});else if(vl>150)items.push({l:'NC-Zuschlag >150 Liter',v:7.50});items.push({l:'Sicherheitszuschlag',v:0.17});items.push({l:'Maut',v:0.38});const s=items.reduce((a,i)=>a+i.v,0);items.push({l:'Energiezuschlag 17%',v:parseFloat((s*0.17).toFixed(2))});}return{possible:true,price:items.reduce((a,i)=>a+i.v,0),items,note:'DPD Classic via MRPacket'};}
 function calcEigen(cc,kmOverride){const km=kmOverride||(KM[cc]||null);if(!km)return{possible:false,note:'Entfernung unbekannt'};return{possible:true,price:km*2*1.20,items:[{l:`${km} km × 2 × 1,20 €${kmOverride?' (PLZ-basiert)':''}`,v:km*2*1.20}],note:'Eigenfahrt ab Finnentrop'};}
 
+// ─── Sendify Live-Abfrage ────────────────────────────────────────────────────
+async function fetchSendify(plz, l, b, h, kg) {
+  try {
+    const resp = await fetch('/.netlify/functions/sendify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plz, l, b, h, kg })
+    });
+    const json = await resp.json();
+
+    if (json.price != null) {
+      const p = parseFloat(json.price);
+      const carrierName = json.carrier || 'Sendify';
+      const note = json.offers && json.offers.length > 1
+        ? `Günstigster von ${json.offers.length} Angeboten: ${carrierName}`
+        : `Sendify · ${carrierName}`;
+      return {
+        id: 'sendify',
+        name: 'Sendify (Spedition)',
+        icon: '🔵',
+        km: null,
+        result: {
+          possible: true,
+          price: p,
+          items: [{ l: note, v: p }],
+          note: 'Sendify Live-Preis via API'
+        }
+      };
+    } else {
+      return {
+        id: 'sendify',
+        name: 'Sendify (Spedition)',
+        icon: '🔵',
+        km: null,
+        result: {
+          possible: false,
+          note: json.error || 'Kein Angebot verfügbar'
+        }
+      };
+    }
+  } catch (e) {
+    return {
+      id: 'sendify',
+      name: 'Sendify (Spedition)',
+      icon: '🔵',
+      km: null,
+      result: { possible: false, note: `Fehler: ${e.message}` }
+    };
+  }
+}
+// ────────────────────────────────────────────────────────────────────────────
+
 function renderCarriers(carriers){
-  const possible=carriers.filter(c=>c.result.possible).sort((a,b)=>a.result.price-b.result.price);
+  const possible=carriers.filter(c=>c.result.possible&&!c.result.loading).sort((a,b)=>a.result.price-b.result.price);
   const best=possible[0];
-  document.getElementById('winnerName').textContent=best?`${best.icon} ${best.name}`:'⚠️ Kein Anbieter';
+  document.getElementById('winnerName').textContent=best?`${best.icon} ${best.name}`:'⏳ Wird geladen…';
   document.getElementById('winnerPrice').textContent=best?fmt(best.result.price)+' netto':'–';
   let html='';
   carriers.forEach(c=>{
+    const isLoading=c.result.loading;
     const isBest=best&&c.id===best.id;
-    const cls=!c.result.possible?'na':isBest?'best':'ok';
-    const bcls=!c.result.possible?'na':isBest?'best':'ok';
-    const btxt=!c.result.possible?'N/A':isBest?'✓ Günstigste':'Verfügbar';
+    const cls=isLoading?'loading':!c.result.possible?'na':isBest?'best':'ok';
+    const bcls=isLoading?'loading':!c.result.possible?'na':isBest?'best':'ok';
+    const btxt=isLoading?'⏳ Wird abgefragt…':!c.result.possible?'N/A':isBest?'✓ Günstigste':'Verfügbar';
     let sur='';
-    if(c.result.possible&&c.result.items)sur='<div class="csur">'+c.result.items.map(i=>`<div class="csur-row"><span>${i.l}</span><span>${fmt(i.v)}</span></div>`).join('')+'</div>';
-    html+=`<div class="crow ${cls}"><div style="flex:1"><div class="cname">${c.icon} ${c.name} <span class="cbadge ${bcls}">${btxt}</span></div><div class="cnote">${c.result.note||''}</div>${sur}</div><div style="text-align:right;min-width:70px;padding-left:8px"><div class="cprice${c.result.possible?'':' na'}">${c.result.possible?fmt(c.result.price):'—'}</div>${c.result.possible?'<div class="cprice-sub">netto</div>':''}</div></div>`;
+    if(!isLoading&&c.result.possible&&c.result.items)sur='<div class="csur">'+c.result.items.map(i=>`<div class="csur-row"><span>${i.l}</span><span>${fmt(i.v)}</span></div>`).join('')+'</div>';
+    const priceHtml=isLoading?'<div class="cprice loading">…</div>':c.result.possible?`<div class="cprice">${fmt(c.result.price)}</div><div class="cprice-sub">netto</div>`:'<div class="cprice na">—</div>';
+    html+=`<div class="crow ${cls}"><div style="flex:1"><div class="cname">${c.icon} ${c.name} <span class="cbadge ${bcls}">${btxt}</span></div><div class="cnote">${c.result.note||''}</div>${sur}</div><div style="text-align:right;min-width:70px;padding-left:8px">${priceHtml}</div></div>`;
   });
   document.getElementById('carrierList').innerHTML=html;
-}
-
-async function fetchSpedition(plz,l,b,h,kg){
-  const area=document.getElementById('spedStatusArea');
-  area.innerHTML='<div class="sped-status sped-loading">⏳ Speditionspreise werden abgerufen…</div>';
-  try{
-    const resp=await fetch('/.netlify/functions/spedition',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plz,l,b,h,kg})});
-    const json=await resp.json();
-    const km=json.km||null;
-    const price=json.price||null;
-    if(price!=null){
-      const p=parseFloat(price);
-      area.innerHTML=`<div class="sped-status" style="background:#edf7ed;border:1px solid #2d6a2d;color:#2d6a2d">✅ Cargo International: <strong>${fmt(p)}</strong> netto</div>`;
-      return{id:'sped',name:'Cargo International (Spedition)',icon:'🚛',km:km,result:{possible:true,price:p,items:[{l:'Spedition Live-Preis',v:p}],note:'Cargo International via API'}};
-    }else{
-      area.innerHTML=`<div class="sped-status sped-error">⚠️ Kein Speditionsangebot verfügbar.<div class="sped-raw">${JSON.stringify(json.raw||json).substring(0,150)}</div></div>`;
-      return km?{id:null,km:km}:null;
-    }
-  }catch(e){
-    area.innerHTML=`<div class="sped-status sped-error">⚠️ Speditionsabfrage fehlgeschlagen: ${e.message}</div>`;
-    return null;
-  }
 }
 
 async function calculate(){
@@ -322,6 +357,7 @@ async function calculate(){
   document.getElementById('warnArea').innerHTML=warns;
   document.getElementById('spedStatusArea').innerHTML='';
 
+  // Initiale Carrier-Liste (ohne Sendify – wird nachgeladen)
   let carriers=[];
   if(!nurSpedition){
     carriers.push({id:'gls',name:'GLS via MRPacket',icon:'🟡',result:glsPossible?{possible:true,price:totalGLS,items:glsItems,note:`GLS · ${sendungen.length} Paket(e)`}:{possible:false,note:'Nicht möglich'}});
@@ -329,23 +365,23 @@ async function calculate(){
   }
   carriers.push({id:'eigen',name:'Eigenfahrt',icon:'🚐',result:eigen});
 
-  renderCarriers(carriers);
+  // Sendify als "loading" Platzhalter einfügen (nur DE mit PLZ)
+  if(cc==='DE'&&plz.length>=4){
+    carriers.push({id:'sendify',name:'Sendify (Spedition)',icon:'🔵',result:{possible:false,loading:true,note:'Wird abgefragt…'}});
+  }
+
   const rc=document.getElementById('resultCard');
   rc.style.display='block';
+  renderCarriers(carriers);
   rc.scrollIntoView({behavior:'smooth',block:'start'});
 
+  // Sendify asynchron nachladen
   if(cc==='DE'&&plz.length>=4){
-    const sped=await fetchSpedition(plz,s0.l,s0.b,s0.h,gesamtGew);
-    if(sped){
-      // Eigenfahrt mit PLZ-km updaten
-      if(sped.km){
-        const eigenIdx=carriers.findIndex(c=>c.id==='eigen');
-        if(eigenIdx>=0)carriers[eigenIdx]=({id:'eigen',name:'Eigenfahrt',icon:'🚐',result:calcEigen(cc,sped.km)});
-      }
-      // Spedition hinzufügen falls Preis vorhanden
-      if(sped.id)carriers.push(sped);
-      renderCarriers(carriers);
-    }
+    const sendifyResult=await fetchSendify(plz,s0.l,s0.b,s0.h,gesamtGew);
+    const idx=carriers.findIndex(c=>c.id==='sendify');
+    if(idx>=0)carriers[idx]=sendifyResult;
+    else carriers.push(sendifyResult);
+    renderCarriers(carriers);
   }
 }
 
